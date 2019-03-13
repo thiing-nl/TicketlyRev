@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Xml;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Screend.Data;
+using Screend.Exceptions;
 using Screend.Repositories;
 using Screend.Services;
 using Swashbuckle.AspNetCore.Swagger;
@@ -111,15 +116,57 @@ namespace Screend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
+            if (!env.IsDevelopment()) {
                 app.UseHsts();
             }
+            
+            app.Use(async (context, next) =>
+            {
+                try
+                {
+                    await next();
+                }
+                catch (Exception ex)
+                {
+                    if (context.Response.HasStarted)
+                    {
+                        throw;
+                    }
+                    
+                    context.Response.ContentType = "application/json";
+                    
+                    switch (ex)
+                    {
+                        case NotFoundException nfe:
+                            context.Response.StatusCode = (int) nfe.StatusCode;
+                            break;
+                        case BadRequestException bre:
+                            context.Response.StatusCode = (int) bre.StatusCode;
+                            break;
+                        case ForbiddenException fe:
+                            context.Response.StatusCode = (int) fe.StatusCode;
+                            break;
+                        default:
+                            context.Response.StatusCode = 500;
+                            break;
+                    }
+                    
+                    try
+                    {
+                        var json = JToken.FromObject(ex);
+                        await context.Response.WriteAsync(json.ToString());
+                    }
+                    catch (JsonSerializationException exception)
+                    {
+                        Debug.WriteLine(exception.Message);
+                        var json = JToken.FromObject(new
+                        {
+                            ex.Message
+                        });
+                        await context.Response.WriteAsync(json.ToString());
+                    }
+                }
+            });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

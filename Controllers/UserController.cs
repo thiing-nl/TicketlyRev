@@ -1,6 +1,8 @@
 using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Screend.Exceptions;
+using Screend.Models.User;
 using Screend.Services;
 
 namespace Screend.Controllers
@@ -28,17 +30,13 @@ namespace Screend.Controllers
         #region PostRoutes
        
         [HttpPost("authenticate")]
-        public IActionResult Authenticate()
+        [ProducesResponseType(typeof(UserTokenDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Authenticate([FromBody] UserAuthenticateDTO userAuthenticateDTO)
         {
-            try
-            {
-                var user = _userService.Authenticate("Test", "test123");
-                return Ok(user);
-            }
-            catch (Exception exception)
-            {
-                return HandleException(exception);
-            }
+            var user = _userService.Authenticate(userAuthenticateDTO.Username, userAuthenticateDTO.Password);
+            return Ok(user);
         }
 
         [HttpPost("register")]
