@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace Screend.Repositories
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "");
+        IQueryable<TEntity> GetAll(); 
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter = null);
         
         DbSet<TEntity> GetSet();
@@ -54,6 +56,11 @@ namespace Screend.Repositories
             return orderBy != null ? orderBy(query) : query;
         }
 
+        public IQueryable<TEntity> GetAll()
+        {
+            return _dbSet.Select(row => row);
+        }
+        
         public virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter)
         {
             var entity = _dbSet.FirstOrDefault(filter);
