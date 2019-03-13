@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Screend.Controllers
 {
-    public class MovieController : Controller
+    public class MovieController : BaseController
     {
 
         #region GetRoutes
