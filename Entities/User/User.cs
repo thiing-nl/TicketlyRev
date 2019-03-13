@@ -14,8 +14,8 @@ namespace Screend.Entities.User
         
         public string Password { get; set; }
         
-        public string Token { get; set; }
-        
         public virtual ICollection<Order.Order> Orders { get; set; }
+        
+        public virtual ICollection<UserToken> Tokens { get; set; }
     }
 }

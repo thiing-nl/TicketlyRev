@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Screend.Controllers
 {
-    public class ScheduleController : Controller
+    public class ScheduleController : BaseController
     {
         
         #region GetRoutes

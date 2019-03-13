@@ -7,8 +7,9 @@ using Screend.Services;
 
 namespace Screend.Controllers
 {
+
     [Route("api/movies")]
-    public class MovieController : Controller
+    public class MovieController : BaseController
     {
 
         private readonly IMovieService _movieService;

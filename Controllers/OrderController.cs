@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Screend.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
 
         #region GetRoutes
