@@ -7,6 +7,8 @@ namespace Screend.Controllers
 
         #region GetRoutes
         
+        [HttpGet]
+        [Route("/movies/")]
         public IActionResult GetAll()
         {
             return Ok();
