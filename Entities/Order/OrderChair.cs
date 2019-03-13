@@ -1,7 +1,7 @@
-using screend.Entities.Movie;
-using screend.Entities.Theater;
+using Screend.Entities.Movie;
+using Screend.Entities.Theater;
 
-namespace screend.Entities.Order
+namespace Screend.Entities.Order
 {
     public class OrderChair
     {

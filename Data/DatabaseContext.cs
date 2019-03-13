@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using screend.Entities;
-using screend.Entities.Movie;
-using screend.Entities.Order;
-using screend.Entities.Schedule;
-using screend.Entities.Theater;
-using screend.Entities.User;
+using Screend.Entities.Movie;
+using Screend.Entities.Order;
+using Screend.Entities.Schedule;
+using Screend.Entities.Theater;
+using Screend.Entities.User;
 
-namespace screend.Data
+namespace Screend.Data
 {
     public class DatabaseContext : DbContext
     {

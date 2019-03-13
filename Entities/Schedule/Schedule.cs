@@ -1,6 +1,6 @@
 using System;
 
-namespace screend.Entities.Schedule
+namespace Screend.Entities.Schedule
 {
     public class Schedule
     {

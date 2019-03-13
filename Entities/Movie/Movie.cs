@@ -1,4 +1,4 @@
-namespace screend.Entities.Movie
+namespace Screend.Entities.Movie
 {
     public class Movie
     {

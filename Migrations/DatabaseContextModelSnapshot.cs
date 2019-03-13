@@ -3,9 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using screend.Data;
+using Screend.Data;
 
-namespace screend.Migrations
+namespace Screend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace screend.Migrations
                 .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("screend.Entities.Movie.Movie", b =>
+            modelBuilder.Entity("Screend.Entities.Movie.Movie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -43,7 +43,7 @@ namespace screend.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("screend.Entities.Movie.MovieTicket", b =>
+            modelBuilder.Entity("Screend.Entities.Movie.MovieTicket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -57,7 +57,7 @@ namespace screend.Migrations
                     b.ToTable("MovieTickets");
                 });
 
-            modelBuilder.Entity("screend.Entities.Order.Order", b =>
+            modelBuilder.Entity("Screend.Entities.Order.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -75,7 +75,7 @@ namespace screend.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("screend.Entities.Order.OrderArticle", b =>
+            modelBuilder.Entity("Screend.Entities.Order.OrderArticle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -93,7 +93,7 @@ namespace screend.Migrations
                     b.ToTable("OrderArticles");
                 });
 
-            modelBuilder.Entity("screend.Entities.Order.OrderChair", b =>
+            modelBuilder.Entity("Screend.Entities.Order.OrderChair", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -123,7 +123,7 @@ namespace screend.Migrations
                     b.ToTable("OrderChairs");
                 });
 
-            modelBuilder.Entity("screend.Entities.Schedule.Schedule", b =>
+            modelBuilder.Entity("Screend.Entities.Schedule.Schedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -143,7 +143,7 @@ namespace screend.Migrations
                     b.ToTable("Schedules");
                 });
 
-            modelBuilder.Entity("screend.Entities.Theater.Theater", b =>
+            modelBuilder.Entity("Screend.Entities.Theater.Theater", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -168,7 +168,7 @@ namespace screend.Migrations
                     );
                 });
 
-            modelBuilder.Entity("screend.Entities.Theater.TheaterArticle", b =>
+            modelBuilder.Entity("Screend.Entities.Theater.TheaterArticle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -182,7 +182,7 @@ namespace screend.Migrations
                     b.ToTable("TheaterArticles");
                 });
 
-            modelBuilder.Entity("screend.Entities.Theater.TheaterChair", b =>
+            modelBuilder.Entity("Screend.Entities.Theater.TheaterChair", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -721,7 +721,7 @@ namespace screend.Migrations
                     );
                 });
 
-            modelBuilder.Entity("screend.Entities.Theater.TheaterRow", b =>
+            modelBuilder.Entity("Screend.Entities.Theater.TheaterRow", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -780,7 +780,7 @@ namespace screend.Migrations
                     );
                 });
 
-            modelBuilder.Entity("screend.Entities.User", b =>
+            modelBuilder.Entity("Screend.Entities.User.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -800,72 +800,72 @@ namespace screend.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("screend.Entities.Order.Order", b =>
+            modelBuilder.Entity("Screend.Entities.Order.Order", b =>
                 {
-                    b.HasOne("screend.Entities.User", "User")
+                    b.HasOne("Screend.Entities.User.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("screend.Entities.Order.OrderArticle", b =>
+            modelBuilder.Entity("Screend.Entities.Order.OrderArticle", b =>
                 {
-                    b.HasOne("screend.Entities.Theater.TheaterArticle", "Article")
+                    b.HasOne("Screend.Entities.Theater.TheaterArticle", "Article")
                         .WithMany()
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("screend.Entities.Order.Order", "Order")
+                    b.HasOne("Screend.Entities.Order.Order", "Order")
                         .WithMany("OrderArticles")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("screend.Entities.Order.OrderChair", b =>
+            modelBuilder.Entity("Screend.Entities.Order.OrderChair", b =>
                 {
-                    b.HasOne("screend.Entities.Movie.MovieTicket", "MovieTicket")
+                    b.HasOne("Screend.Entities.Movie.MovieTicket", "MovieTicket")
                         .WithMany()
                         .HasForeignKey("MovieTicketId");
 
-                    b.HasOne("screend.Entities.Order.Order", "Order")
+                    b.HasOne("Screend.Entities.Order.Order", "Order")
                         .WithMany("OrderChairs")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("screend.Entities.Schedule.Schedule", "Schedule")
+                    b.HasOne("Screend.Entities.Schedule.Schedule", "Schedule")
                         .WithMany()
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("screend.Entities.Theater.TheaterChair", "TheaterChair")
+                    b.HasOne("Screend.Entities.Theater.TheaterChair", "TheaterChair")
                         .WithMany()
                         .HasForeignKey("TheaterChairId");
                 });
 
-            modelBuilder.Entity("screend.Entities.Schedule.Schedule", b =>
+            modelBuilder.Entity("Screend.Entities.Schedule.Schedule", b =>
                 {
-                    b.HasOne("screend.Entities.Movie.Movie", "Movie")
+                    b.HasOne("Screend.Entities.Movie.Movie", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("screend.Entities.Theater.Theater", "Theater")
+                    b.HasOne("Screend.Entities.Theater.Theater", "Theater")
                         .WithMany("Schedules")
                         .HasForeignKey("TheaterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("screend.Entities.Theater.TheaterChair", b =>
+            modelBuilder.Entity("Screend.Entities.Theater.TheaterChair", b =>
                 {
-                    b.HasOne("screend.Entities.Theater.TheaterRow", "TheaterRow")
+                    b.HasOne("Screend.Entities.Theater.TheaterRow", "TheaterRow")
                         .WithMany("TheaterChairs")
                         .HasForeignKey("TheaterRowId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("screend.Entities.Theater.TheaterRow", b =>
+            modelBuilder.Entity("Screend.Entities.Theater.TheaterRow", b =>
                 {
-                    b.HasOne("screend.Entities.Theater.Theater", "Theater")
+                    b.HasOne("Screend.Entities.Theater.Theater", "Theater")
                         .WithMany("Rows")
                         .HasForeignKey("TheaterId")
                         .OnDelete(DeleteBehavior.Cascade);

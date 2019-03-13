@@ -1,4 +1,4 @@
-namespace screend.Entities.Theater
+namespace Screend.Entities.Theater
 {
     public class TheaterArticle
     {

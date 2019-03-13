@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace screend.Entities.Order
+namespace Screend.Entities.Order
 {
     public class Order
     {

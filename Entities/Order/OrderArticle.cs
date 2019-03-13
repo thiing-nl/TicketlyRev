@@ -1,6 +1,6 @@
-using screend.Entities.Theater;
+using Screend.Entities.Theater;
 
-namespace screend.Entities.Order
+namespace Screend.Entities.Order
 {
     public class OrderArticle
     {

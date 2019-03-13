@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace screend.Controllers
+namespace Screend.Controllers
 {
     public class HomeController : Controller
     {
