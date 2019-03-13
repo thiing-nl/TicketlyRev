@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Screend.Data;
+using Screend.Repositories;
+using Screend.Services;
 
 namespace Screend
 {
@@ -33,6 +35,19 @@ namespace Screend
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // Repositories
+            services.AddTransient<IMovieRepository, MovieRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IScheduleRepository, ScheduleRepository>();
+            services.AddTransient<ITheaterRepository, TheaterRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
+            // Services
+            services.AddTransient<IMovieService, MovieService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IScheduleService, ScheduleService>();
+            services.AddTransient<ITheaterService, TheaterService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             
