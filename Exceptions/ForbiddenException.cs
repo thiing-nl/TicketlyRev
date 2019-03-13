@@ -7,7 +7,7 @@ namespace Screend.Exceptions
         /// <summary>
         /// <inheritdoc cref="HttpException" />
         /// </summary>
-        public HttpStatusCode StatusCode = HttpStatusCode.BadRequest;
+        public HttpStatusCode StatusCode = HttpStatusCode.Forbidden;
         
         /// <summary>
         /// <inheritdoc cref="HttpException" />
