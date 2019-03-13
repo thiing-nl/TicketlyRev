@@ -12,7 +12,7 @@ namespace screend.Entities.Order
         
         public string MollieId { get; set; }
         
-        public virtual User User { get; set; }
+        public virtual User.User User { get; set; }
         
         public virtual ICollection<OrderArticle> OrderArticles { get; set; }
         

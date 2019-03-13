@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace screend.Entities
+namespace screend.Entities.User
 {
     public class User
     {

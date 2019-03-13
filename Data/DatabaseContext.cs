@@ -5,6 +5,7 @@ using screend.Entities.Movie;
 using screend.Entities.Order;
 using screend.Entities.Schedule;
 using screend.Entities.Theater;
+using screend.Entities.User;
 
 namespace screend.Data
 {
