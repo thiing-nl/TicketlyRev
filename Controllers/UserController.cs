@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Screend.Exceptions;
@@ -28,6 +29,7 @@ namespace Screend.Controllers
         /// <returns>Received user</returns>
         /// <exception cref="NotFoundException"></exception>
         /// <exception cref="InternalServerErrorException"></exception>
+        [Authorize]
         [HttpGet("me")]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
