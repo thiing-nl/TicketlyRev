@@ -21,7 +21,15 @@ namespace Screend.Controllers
         {
             _scheduleService = scheduleService;
         }
-        
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
+        public IActionResult GetById(int id)
+        {
+            var schedule = _scheduleService.GetById(id);
+            return Ok(Mapper.Map<ScheduleDTO>(schedule));
+        }
+
         #region GetRoutes
 
         [HttpGet("day")]
@@ -54,7 +62,7 @@ namespace Screend.Controllers
 
             return Ok(schedulesList.ToArray());
         }
-        
+
         #endregion
         
     }

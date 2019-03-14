@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Screend.Entities.Schedule;
+using Screend.Exceptions;
 using Screend.Repositories;
 
 namespace Screend.Services
@@ -13,6 +14,7 @@ namespace Screend.Services
         ICollection<Schedule> GetByDay(DateTime date);
 
         ICollection<Schedule> GetByMovie(int movieId);
+        Schedule GetById(int id);
     }
     
     public class ScheduleService : BaseService, IScheduleService
@@ -44,6 +46,18 @@ namespace Screend.Services
                 .Get(it => it.Movie.Id == movieId && it.Time > today && it.Time < end)
                 .OrderBy(it => it.Time)
                 .ToArray();
+        }
+
+        public Schedule GetById(int id)
+        {
+            var schedule = _scheduleRepository.GetByID(id);
+
+            if (schedule == null)
+            {
+                throw new NotFoundException("Schedule not found");
+            }
+
+            return schedule;
         }
     }
 }
