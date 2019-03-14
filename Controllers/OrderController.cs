@@ -16,26 +16,12 @@ namespace Screend.Controllers
             _orderService = orderService;
         }
 
-        #region GetRoutes
-
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            return Ok();
-        }
-       
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            return Ok();
-        }
-        
-        #endregion
-
         #region PostRoutes
 
         [HttpPost("create")]
         [ProducesResponseType(typeof(OrderDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Create([FromBody] OrderCreateDTO orderCreateDto)
         {
             var order = _orderService.Create(orderCreateDto);
