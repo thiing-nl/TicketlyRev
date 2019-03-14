@@ -81,7 +81,7 @@ namespace Screend.Migrations
                     LastName = table.Column<string>(nullable: true),
                     Username = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
-                    Token = table.Column<string>(nullable: true)
+                    AccountType = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,6 +157,28 @@ namespace Screend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Token = table.Column<string>(nullable: true),
+                    ValidFrom = table.Column<DateTime>(nullable: false),
+                    ValidTo = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserToken_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TheaterChairs",
                 columns: table => new
                 {
@@ -209,11 +231,9 @@ namespace Screend.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     OrderId = table.Column<int>(nullable: false),
-                    ChairId = table.Column<int>(nullable: false),
-                    TicketId = table.Column<int>(nullable: false),
-                    ScheduleId = table.Column<int>(nullable: false),
-                    TheaterChairId = table.Column<int>(nullable: true),
-                    MovieTicketId = table.Column<int>(nullable: true)
+                    TheaterChairId = table.Column<int>(nullable: false),
+                    MovieTicketId = table.Column<int>(nullable: false),
+                    ScheduleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -223,7 +243,7 @@ namespace Screend.Migrations
                         column: x => x.MovieTicketId,
                         principalTable: "MovieTickets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderChairs_Orders_OrderId",
                         column: x => x.OrderId,
@@ -241,7 +261,7 @@ namespace Screend.Migrations
                         column: x => x.TheaterChairId,
                         principalTable: "TheaterChairs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -883,6 +903,11 @@ namespace Screend.Migrations
                 name: "IX_TheaterRows_TheaterId",
                 table: "TheaterRows",
                 column: "TheaterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserToken_UserId",
+                table: "UserToken",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -892,6 +917,9 @@ namespace Screend.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderChairs");
+
+            migrationBuilder.DropTable(
+                name: "UserToken");
 
             migrationBuilder.DropTable(
                 name: "TheaterArticles");

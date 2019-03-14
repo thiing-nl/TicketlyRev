@@ -24,7 +24,13 @@ namespace Screend.Services
 
         public ICollection<Schedule> GetByDay(DateTime date)
         {
-            DateTime end = date.AddDays(1);
+            var next = date.AddDays(1);
+            DateTime end = new DateTime(
+                next.Year,
+                next.Month,
+                next.Day
+                );
+      
             return _scheduleRepository.Get(it => it.Time > date && it.Time < end).ToArray();
         }
         

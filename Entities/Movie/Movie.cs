@@ -8,6 +8,8 @@ namespace Screend.Entities.Movie
         
         public string Description { get; set; }
         
+        public string Director { get; set; }
+        
         public int Runtime { get; set; }
         
         public string Language { get; set; }

@@ -9,8 +9,8 @@ using Screend.Data;
 namespace Screend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190314002842_ScheduleRelationUpdate")]
-    partial class ScheduleRelationUpdate
+    [Migration("20190314023350_MovieTicketSeeder")]
+    partial class MovieTicketSeeder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,8 @@ namespace Screend.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<string>("Director");
+
                     b.Property<string>("Genre");
 
                     b.Property<string>("Img");
@@ -43,6 +45,14 @@ namespace Screend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
+
+                    b.HasData(
+                        new { Id = 1, Age = "PG-13", Description = "Earth's future has been riddled by disasters, famines, and droughts. There is only one way to ensure mankind's survival: Interstellar travel. A newly discovered wormhole in the far reaches of our solar system allows a team of astronauts to go where no man has gone before, a planet that may have the right environment to sustain human life.", Director = "Christopher Nolan", Genre = "Adventure,Drama,Sci-Fi", Img = "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg", Language = "EN", Rating = "", Runtime = 169, Title = "Interstellar" },
+                        new { Id = 2, Age = "PG-13", Description = "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.", Director = "Christopher Nolan", Genre = "Action,Adventure,Sci-Fi,Thriller", Img = "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg", Language = "EN", Rating = "", Runtime = 148, Title = "Inception" },
+                        new { Id = 3, Age = "PG-13", Description = "The story of the legendary rock band Queen and lead singer Freddie Mercury, leading up to their famous performance at Live Aid (1985).", Director = "Bryan Singer", Genre = "Biography,Drama,Music", Img = "https://m.media-amazon.com/images/M/MV5BNDg2NjIxMDUyNF5BMl5BanBnXkFtZTgwMzEzNTE1NTM@._V1_SX300.jpg", Language = "EN", Rating = "", Runtime = 134, Title = "Bohemian Rhapsody" },
+                        new { Id = 4, Age = "R", Description = "Hank Palmer is a successful defense attorney in Chicago, who is getting a divorce. When His brother calls with the news that their mother has died, Hank returns to his childhood home to attend the funeral. Despite the brittle bond between Hank and the Judge, Hank must come to his father's aid and defend him in court. Here, Hank discovers the truth behind the case, which binds together the dysfunctional family and reveals the struggles and secrecy of the family.", Director = "David Dobkin", Genre = "Crime,Drama", Img = "https://m.media-amazon.com/images/M/MV5BMTcyNzIxOTIwMV5BMl5BanBnXkFtZTgwMzE0NjQwMjE@._V1_SX300.jpg", Language = "EN", Rating = "", Runtime = 141, Title = "The Judge" },
+                        new { Id = 5, Age = "PG-13", Description = "Harry, Ron, and Hermione continue their quest of finding and destroying the Dark Lord's three remaining Horcruxes, the magical items responsible for his immortality. But as the mystical Deathly Hallows are uncovered, and Voldemort finds out about their mission, the biggest battle begins and life as they know it will never be the same again.", Director = "David Yates", Genre = "Adventure,Drama,Fantasy,Mystery", Img = "https://m.media-amazon.com/images/M/MV5BMjIyZGU4YzUtNDkzYi00ZDRhLTljYzctYTMxMDQ4M2E0Y2YxXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg", Language = "EN", Rating = "", Runtime = 130, Title = "Harry Potter and the Deathly Hallows: Part 2" }
+                    );
                 });
 
             modelBuilder.Entity("Screend.Entities.Movie.MovieTicket", b =>
@@ -57,6 +67,13 @@ namespace Screend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MovieTickets");
+
+                    b.HasData(
+                        new { Id = 1, Name = "Normaal < 120min", Price = 8.5 },
+                        new { Id = 2, Name = "Normaal > 120min", Price = 9.0 },
+                        new { Id = 3, Name = "3D Film < 120min", Price = 11.0 },
+                        new { Id = 4, Name = "3D Film > 120min", Price = 11.5 }
+                    );
                 });
 
             modelBuilder.Entity("Screend.Entities.Order.Order", b =>
@@ -782,6 +799,8 @@ namespace Screend.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccountType");
 
                     b.Property<string>("FirstName");
 

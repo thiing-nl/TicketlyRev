@@ -93,6 +93,7 @@ namespace Screend
             {
                 cfg.CreateMissingTypeMaps = true;
                 cfg.AddProfiles(typeof(UserProfile).Assembly);
+                cfg.AddProfiles(typeof(ScheduleProfile).Assembly);
             });
             services.AddAutoMapper();
             

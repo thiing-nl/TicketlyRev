@@ -9,6 +9,6 @@ namespace Screend.Models.Theater
     {
         public int Id { get; set; }
         public int ChairNumber { get; set; }
-//        public ChairType IsFree { get; set; }
+        public ChairType IsOccupied { get; set; } = ChairType.FREE;
     }
 }
