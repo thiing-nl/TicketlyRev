@@ -24,7 +24,7 @@ namespace Screend.Controllers
         #region GetRoutes
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPaymentStatus(int id)
         { 
             using (var httpClient = new HttpClient())
