@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Screend.Entities.Schedule;
@@ -11,6 +12,7 @@ namespace Screend.Services
 
         ICollection<Schedule> GetByDay(DateTime date);
 
+        ICollection<Schedule> GetByMovie(int movieId);
     }
     
     public class ScheduleService : BaseService, IScheduleService
@@ -30,9 +32,18 @@ namespace Screend.Services
                 next.Month,
                 next.Day
                 );
-      
+            
             return _scheduleRepository.Get(it => it.Time > date && it.Time < end).ToArray();
         }
-        
+
+        public ICollection<Schedule> GetByMovie(int movieId)
+        {
+            DateTime today = DateTime.Today;
+            DateTime end = DateTime.Today.AddDays(7);
+            return _scheduleRepository
+                .Get(it => it.Movie.Id == movieId && it.Time > today && it.Time < end)
+                .OrderBy(it => it.Time)
+                .ToArray();
+        }
     }
 }

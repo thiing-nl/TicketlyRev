@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +47,12 @@ namespace Screend
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
 
             // Repositories
             services.AddTransient<IMovieRepository, MovieRepository>();
@@ -62,6 +69,11 @@ namespace Screend
             services.AddTransient<IUserService, UserService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("MyPolicy"));
+            });
+            
             
             // configure jwt authentication
             var key = Encoding.ASCII.GetBytes(Configuration["secret"]);
@@ -95,6 +107,7 @@ namespace Screend
                 cfg.CreateMissingTypeMaps = true;
                 cfg.AddProfiles(typeof(UserProfile).Assembly);
                 cfg.AddProfiles(typeof(ScheduleProfile).Assembly);
+                cfg.AddProfiles(typeof(MovieProfile).Assembly);
             });
             services.AddAutoMapper();
             
@@ -128,6 +141,7 @@ namespace Screend
             {
                 try
                 {
+                    Console.WriteLine(context.Request.Path);
                     await next();
                 }
                 catch (Exception ex)
@@ -194,6 +208,8 @@ namespace Screend
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseCors("MyPolicy");
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,20 +16,27 @@ namespace Screend.Controllers
     {
 
         private readonly IMovieService _movieService;
+        private readonly IScheduleService _scheduleService;
 
-        public MovieController(IMovieService movieService)
+        public MovieController(IMovieService movieService, IScheduleService scheduleService)
         {
             _movieService = movieService;
+            _scheduleService = scheduleService;
         }
 
         #region GetRoutes
         
         [HttpGet]
-        [ProducesResponseType(typeof(ICollection<MovieDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ICollection<MovieWithScheduleDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
             var movies = _movieService.GetAll();
-            return Ok(Mapper.Map<ICollection<MovieDTO>>(movies));
+         
+            return Ok(movies.Select(movie => new MovieWithScheduleDTO
+            {
+                Movie = Mapper.Map<MovieDTO>(movie),
+                Schedule = Mapper.Map<ICollection<MovieScheduleDTO>>(_scheduleService.GetByMovie(movie.Id)) 
+            }));
         }
 
         [HttpGet("{id}")]

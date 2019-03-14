@@ -2,7 +2,6 @@ namespace Screend.Models.Movie
 {
     public class MovieDTO
     {
-        
         public int Id { get; set; }
         
         public string Title { get; set; }
@@ -20,6 +19,5 @@ namespace Screend.Models.Movie
         public string Rating { get; set; }
         
         public string Img { get; set; }
-        
     }
 }
