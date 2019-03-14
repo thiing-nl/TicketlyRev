@@ -10,13 +10,16 @@ namespace Screend.Services
 {
     public interface IOrderService
     {
-        Order Create(OrderCreateDTO orderDto);
+        Order Create(OrderCreateDTO orderDto, string mollieId);
+
+        Order GetById(int id);
+
+        void Update(Order order);
     }
     
     public class OrderService : BaseService, IOrderService
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IMovieRepository _movieRepository;
         private readonly IScheduleRepository _scheduleRepository;
         private readonly IOrderChairRepository _orderChairRepository;
         private readonly IMovieTicketRepository _movieTicketRepository;
@@ -24,7 +27,6 @@ namespace Screend.Services
 
         public OrderService(
             IOrderRepository orderRepository,
-            IMovieRepository movieRepository,
             IScheduleRepository scheduleRepository,
             IOrderChairRepository orderChairRepository,
             IMovieTicketRepository movieTicketRepository,
@@ -32,14 +34,29 @@ namespace Screend.Services
         )
         {
             _orderRepository = orderRepository;
-            _movieRepository = movieRepository;
             _scheduleRepository = scheduleRepository;
             _orderChairRepository = orderChairRepository;
             _movieTicketRepository = movieTicketRepository;
             _theaterChairRepository = theaterChairRepository;
         }
 
-        public Order Create(OrderCreateDTO orderDto)
+        public void Update(Order update)
+        {
+            var order = GetById(update.Id);
+            order.Paid = update.Paid;
+            _orderRepository.Commit();
+        }
+        public Order GetById(int id)
+        {
+            var order =  _orderRepository.GetByID(id);
+            if (order == null)
+            {
+                throw new NotFoundException("Order not found");
+            }
+            return order;
+        }
+
+        public Order Create(OrderCreateDTO orderDto, string mollieId)
         {            
             var schedule = _scheduleRepository.GetByID(orderDto.ScheduleId);
 
@@ -51,8 +68,8 @@ namespace Screend.Services
             Order order = new Order
             {
                 UserId = 1,
-                Paid = 1,
-                MollieId = "1234"
+                Paid = 0,
+                MollieId = mollieId
             };
             
             _orderRepository.Insert(order);
