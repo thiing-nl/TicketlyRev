@@ -10,6 +10,8 @@ namespace Screend.Models.Movie
         
         public int Runtime { get; set; }
         
+        public string Director { get; set; }
+        
         public string Language { get; set; }
         
         public string Age { get; set; }

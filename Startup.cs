@@ -21,6 +21,7 @@ using Microsoft.IdentityModel.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Screend.Data;
+using Screend.Entities.Theater;
 using Screend.Exceptions;
 using Screend.Profiles;
 using Screend.Repositories;
@@ -56,9 +57,12 @@ namespace Screend
 
             // Repositories
             services.AddTransient<IMovieRepository, MovieRepository>();
+            services.AddTransient<IMovieTicketRepository, MovieTicketRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IScheduleRepository, ScheduleRepository>();
             services.AddTransient<ITheaterRepository, TheaterRepository>();
+            services.AddTransient<ITheaterChairRepository, TheaterChairRepository>();
+            services.AddTransient<IOrderChairRepository, OrderChairRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
             // Services
