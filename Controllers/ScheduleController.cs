@@ -23,7 +23,7 @@ namespace Screend.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ScheduleDTO), StatusCodes.Status200OK)]
         public IActionResult GetById(int id)
         {
             var schedule = _scheduleService.GetById(id);
