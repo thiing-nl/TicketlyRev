@@ -7,13 +7,37 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Screend.Entities.User;
 using Screend.Exceptions;
+using Screend.Models.User;
 using Screend.Repositories;
 
 namespace Screend.Services
 {
     public interface IUserService
     {
+        /// <summary>
+        /// Authenticate User
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <param name="password">Password</param>
+        /// <exception cref="ForbiddenException"></exception>
+        /// <returns>Authenticated User</returns>
         User Authenticate(string username, string password);
+
+        /// <summary>
+        /// Register a user
+        /// </summary>
+        /// <param name="userRegisterDTO">User to be Registered</param>
+        /// <exception cref="ForbiddenException"></exception>
+        /// <returns>User</returns>
+        User Register(UserRegisterDTO userRegisterDTO);
+
+        /// <summary>
+        /// Get user by Id
+        /// </summary>
+        /// <param name="userId">User Id</param>
+        /// <exception cref="NotFoundException">User not found</exception>
+        /// <returns>User</returns>
+        User Get(int userId);
     }
 
     public class UserService : BaseService, IUserService
@@ -27,14 +51,21 @@ namespace Screend.Services
             _userRepository = userRepository;
             _configuration = configuration;
         }
-        
-        /// <summary>
-        /// Authenticate the user
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        /// <exception cref="ForbiddenException"></exception>
+
+        /// <inheritdoc cref="IUserService.Get" />
+        public User Get(int userId)
+        {
+            var user = _userRepository.GetByID(userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+
+            return user;
+        }
+
+        /// <inheritdoc cref="IUserService.Authenticate" />
         public User Authenticate(string username, string password)
         {
             var user = _userRepository
@@ -61,7 +92,30 @@ namespace Screend.Services
             // Return user object
             return user;
         }
-        
+
+        /// <inheritdoc cref="IUserService.Register" />
+        public User Register(UserRegisterDTO userRegisterDTO)
+        {
+            var user = _userRepository
+                .FirstOrDefault(x => x.Username == userRegisterDTO.Username);
+
+            // User doesn't exist
+            if (user != null)
+                throw new ForbiddenException("User with this username already exists.");
+
+            // Map user
+            var mappedUser = Mapper.Map<User>(userRegisterDTO);
+
+            // Encrypt password
+            mappedUser.Password = BCrypt.Net.BCrypt.HashPassword(mappedUser.Password);
+
+            // Add user
+            _userRepository.Insert(mappedUser);
+            _userRepository.Commit();
+
+            return mappedUser;
+        }
+
         /// <summary>
         /// Issue token
         /// </summary>

@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Screend.Exceptions;
@@ -19,30 +22,63 @@ namespace Screend.Controllers
 
         #region GetRoutes
         
+        /// <summary>
+        /// Get current user
+        /// </summary>
+        /// <returns>Received user</returns>
+        /// <exception cref="NotFoundException"></exception>
+        /// <exception cref="InternalServerErrorException"></exception>
         [HttpGet("me")]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Me()
         {
-            return Ok();
+            var nameIdentifierClaim = HttpContext.User.Claims.FirstOrDefault(it => it.Type == ClaimTypes.NameIdentifier);
+
+            if (nameIdentifierClaim == null)
+            {
+                throw new InternalServerErrorException("Cannot convert token into user.");
+            }
+
+            int.TryParse(nameIdentifierClaim.Value, out var parsedUserId);
+                
+            return Ok(Mapper.Map<UserDTO>(_userService.Get(parsedUserId)));
         }
 
         #endregion
         
         #region PostRoutes
        
+        /// <summary>
+        /// Authenticate User
+        /// </summary>
+        /// <param name="userAuthenticateDTO"></param>
+        /// <returns></returns>
         [HttpPost("authenticate")]
-        [ProducesResponseType(typeof(UserTokenDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthorizedUserDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Authenticate([FromBody] UserAuthenticateDTO userAuthenticateDTO)
         {
+            // Authenticate User
             var user = _userService.Authenticate(userAuthenticateDTO.Username, userAuthenticateDTO.Password);
-            return Ok(user);
+            
+            return Ok(Mapper.Map<AuthorizedUserDTO>(user));
         }
 
+        /// <summary>
+        /// Register a user
+        /// </summary>
+        /// <param name="userRegisterDTO">User to be registered</param>
+        /// <returns>Registered user</returns>
         [HttpPost("register")]
-        public IActionResult Register()
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public IActionResult Register([FromBody] UserRegisterDTO userRegisterDTO)
         {
-            return Ok();
+            var user = _userService.Register(userRegisterDTO);
+            
+            return Ok(Mapper.Map<UserDTO>(user));
         }
         
         #endregion
