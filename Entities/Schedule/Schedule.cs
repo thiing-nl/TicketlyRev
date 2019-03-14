@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Screend.Entities.Order;
 
 namespace Screend.Entities.Schedule
 {
@@ -15,5 +17,7 @@ namespace Screend.Entities.Schedule
         public virtual Theater.Theater Theater { get; set; }
         
         public virtual Movie.Movie Movie { get; set; }
+        
+        public virtual ICollection<OrderChair> OrderChairs { get; set; }
     }
 }

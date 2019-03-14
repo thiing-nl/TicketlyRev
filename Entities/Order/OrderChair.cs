@@ -9,9 +9,9 @@ namespace Screend.Entities.Order
         
         public int OrderId { get; set; }
         
-        public int ChairId { get; set; }
+        public int TheaterChairId { get; set; }
         
-        public int TicketId { get; set; }
+        public int MovieTicketId { get; set; }
         
         public int ScheduleId { get; set; }
         
