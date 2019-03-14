@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: screend
+      MYSQL_USER: ticketly_admin
+      MYSQL_PASSWORD: 54fqc2V7YWvg3cSz7gvqDPsSF3ehFnc7
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+    restart: always
+    
+  web:
+    environment:
+      ASPNETCORE_URLS: http://+:4040
+    depends_on:
+      - db
+    build: .
+    ports:
+      - "4040:4040"
+
+volumes:
+  dbdata:
