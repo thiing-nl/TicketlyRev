@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Screend.Data;
 using Screend.Exceptions;
+using Screend.Profiles;
 using Screend.Repositories;
 using Screend.Services;
 using Swashbuckle.AspNetCore.Swagger;
@@ -91,6 +92,7 @@ namespace Screend
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMissingTypeMaps = true;
+                cfg.AddProfiles(typeof(UserProfile).Assembly);
             });
             services.AddAutoMapper();
             

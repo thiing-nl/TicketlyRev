@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Screend.Data;
 
 namespace Screend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190313234606_UserAddAccountType")]
+    partial class UserAddAccountType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,13 +100,17 @@ namespace Screend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("MovieTicketId");
+                    b.Property<int>("ChairId");
+
+                    b.Property<int?>("MovieTicketId");
 
                     b.Property<int>("OrderId");
 
                     b.Property<int>("ScheduleId");
 
-                    b.Property<int>("TheaterChairId");
+                    b.Property<int?>("TheaterChairId");
+
+                    b.Property<int>("TicketId");
 
                     b.HasKey("Id");
 
@@ -841,8 +847,7 @@ namespace Screend.Migrations
                 {
                     b.HasOne("Screend.Entities.Movie.MovieTicket", "MovieTicket")
                         .WithMany()
-                        .HasForeignKey("MovieTicketId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MovieTicketId");
 
                     b.HasOne("Screend.Entities.Order.Order", "Order")
                         .WithMany("OrderChairs")
@@ -850,14 +855,13 @@ namespace Screend.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Screend.Entities.Schedule.Schedule", "Schedule")
-                        .WithMany("OrderChairs")
+                        .WithMany()
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Screend.Entities.Theater.TheaterChair", "TheaterChair")
                         .WithMany()
-                        .HasForeignKey("TheaterChairId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TheaterChairId");
                 });
 
             modelBuilder.Entity("Screend.Entities.Schedule.Schedule", b =>
