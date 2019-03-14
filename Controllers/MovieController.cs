@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -33,25 +34,11 @@ namespace Screend.Controllers
         [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(int id)
-        {
+        {        
             var movie = _movieService.Get(id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
             return Ok(Mapper.Map<MovieDTO>(movie));
         }
         
-        #endregion
-
-        #region PostRoutes
-
-        [HttpPost]
-        public IActionResult Create()
-        {
-            return Ok();
-        }
-
         #endregion
        
         #region DeleteRoutes
@@ -61,6 +48,7 @@ namespace Screend.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
+            _movieService.Delete(id);
             return Ok();
         }
         
