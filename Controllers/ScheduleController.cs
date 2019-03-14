@@ -27,7 +27,21 @@ namespace Screend.Controllers
         public IActionResult GetById(int id)
         {
             var schedule = _scheduleService.GetById(id);
-            return Ok(Mapper.Map<ScheduleDTO>(schedule));
+            var mappedSchedule = Mapper.Map<ScheduleDTO>(schedule);
+            foreach (var theaterRow in mappedSchedule.Theater.Rows)
+            {
+                foreach (var theaterChair in theaterRow.TheaterChairs)
+                {
+                    var isOccupied = schedule.OrderChairs.Any(it => it.TheaterChairId == theaterChair.Id);
+
+                    if (isOccupied)
+                    {
+                        theaterChair.IsOccupied = ChairType.OCCUPIED;
+                    }
+                }
+            }
+            
+            return Ok(mappedSchedule);
         }
 
         #region GetRoutes
