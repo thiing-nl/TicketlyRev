@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Screend.Entities.Location;
 using Screend.Entities.Movie;
 using Screend.Entities.Order;
 using Screend.Entities.Schedule;
@@ -77,6 +78,28 @@ namespace Screend.Data
             
             #endregion
             
+            #region Location Seeder
+            
+            modelBuilder.Entity<Location>().HasData(new Location
+            {
+                Id = 1,
+                Name = "Tilburg",
+                Movies = new LocationMovie[0],
+                Theaters = new Theater[0],
+                Schedules = new Schedule[0]
+            });
+            
+            modelBuilder.Entity<Location>().HasData(new Location
+            {
+                Id = 2,
+                Name = "Breda",
+                Movies = new LocationMovie[0],
+                Theaters = new Theater[0],
+                Schedules = new Schedule[0]
+            });
+            
+            #endregion
+            
             #region Movie seeder
             
             modelBuilder.Entity<Movie>().HasData(new Movie
@@ -93,6 +116,22 @@ namespace Screend.Data
                 Img = "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
             });
             
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 1,
+                MovieId = 1,
+                LocationId = 1,
+                Orders = new Order[0]
+            });
+            
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 2,
+                MovieId = 1,
+                LocationId = 2,
+                Orders = new Order[0]
+            });
+            
             modelBuilder.Entity<Movie>().HasData(new Movie
             {
                 Id = 2,
@@ -105,6 +144,22 @@ namespace Screend.Data
                 Genre = "Action,Adventure,Sci-Fi,Thriller",
                 Rating = "",
                 Img = "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg"
+            });
+            
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 3,
+                MovieId = 2,
+                LocationId = 1,
+                Orders = new Order[0]
+            });
+            
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 4,
+                MovieId = 2,
+                LocationId = 2,
+                Orders = new Order[0]
             });
             
             modelBuilder.Entity<Movie>().HasData(new Movie
@@ -121,6 +176,22 @@ namespace Screend.Data
                 Img = "https://m.media-amazon.com/images/M/MV5BNDg2NjIxMDUyNF5BMl5BanBnXkFtZTgwMzEzNTE1NTM@._V1_SX300.jpg"
             });
             
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 5,
+                MovieId = 3,
+                LocationId = 1,
+                Orders = new Order[0]
+            });
+            
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 6,
+                MovieId = 3,
+                LocationId = 2,
+                Orders = new Order[0]
+            });
+            
             modelBuilder.Entity<Movie>().HasData(new Movie
             {
                 Id = 4,
@@ -133,6 +204,22 @@ namespace Screend.Data
                 Genre = "Crime,Drama",
                 Rating = "",
                 Img = "https://m.media-amazon.com/images/M/MV5BMTcyNzIxOTIwMV5BMl5BanBnXkFtZTgwMzE0NjQwMjE@._V1_SX300.jpg"
+            });
+            
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 7,
+                MovieId = 4,
+                LocationId = 1,
+                Orders = new Order[0]
+            });
+            
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 8,
+                MovieId = 4,
+                LocationId = 2,
+                Orders = new Order[0]
             });
             
             modelBuilder.Entity<Movie>().HasData(new Movie
@@ -149,6 +236,22 @@ namespace Screend.Data
                 Img = "https://m.media-amazon.com/images/M/MV5BMjIyZGU4YzUtNDkzYi00ZDRhLTljYzctYTMxMDQ4M2E0Y2YxXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg"
             });
             
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 9,
+                MovieId = 5,
+                LocationId = 1,
+                Orders = new Order[0]
+            });
+            
+            modelBuilder.Entity<LocationMovie>().HasData(new LocationMovie
+            {
+                Id = 10,
+                MovieId = 5,
+                LocationId = 2,
+                Orders = new Order[0]
+            });
+            
             #endregion
             
             #region Theater 1 seed
@@ -159,7 +262,8 @@ namespace Screend.Data
                 Name = "Zaal 1",
                 Rows = new TheaterRow[0],
                 Has3D = true,
-                WheelchairAccessible = true
+                WheelchairAccessible = true,
+                LocationId = 1
             });
 
             Dictionary<char, int> rowChairs = new Dictionary<char, int>();
@@ -216,7 +320,8 @@ namespace Screend.Data
                 Name = "Zaal 2",
                 Rows = new TheaterRow[0],
                 Has3D = true,
-                WheelchairAccessible = true
+                WheelchairAccessible = true,
+                LocationId = 1
             });
 
             Dictionary<char, int> rowChairs1 = new Dictionary<char, int>();
@@ -268,7 +373,8 @@ namespace Screend.Data
                 Name = "Zaal 3",
                 Rows = new TheaterRow[0],
                 Has3D = false,
-                WheelchairAccessible = true
+                WheelchairAccessible = true,
+                LocationId = 1
             });
 
             Dictionary<char, int> rowChairs2 = new Dictionary<char, int>();
@@ -320,7 +426,8 @@ namespace Screend.Data
                 Name = "Zaal 4",
                 Rows = new TheaterRow[0],
                 Has3D = false,
-                WheelchairAccessible = true
+                WheelchairAccessible = true,
+                LocationId = 1
             });
 
             Dictionary<char, int> rowChairs3 = new Dictionary<char, int>();
@@ -370,7 +477,8 @@ namespace Screend.Data
                 Name = "Zaal 5",
                 Rows = new TheaterRow[0],
                 Has3D = false,
-                WheelchairAccessible = false
+                WheelchairAccessible = false,
+                LocationId = 1
             });
 
             Dictionary<char, int> rowChairs4 = new Dictionary<char, int>();
@@ -418,7 +526,8 @@ namespace Screend.Data
                 Name = "Zaal 6",
                 Rows = new TheaterRow[0],
                 Has3D = false,
-                WheelchairAccessible = false
+                WheelchairAccessible = false,
+                LocationId = 1
             });
 
             Dictionary<char, int> rowChairs5 = new Dictionary<char, int>();

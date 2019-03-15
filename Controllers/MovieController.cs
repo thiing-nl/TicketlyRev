@@ -5,6 +5,7 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Screend.Filters;
 using Screend.Models.Movie;
 using Screend.Services;
 
@@ -12,6 +13,7 @@ namespace Screend.Controllers
 {
 
     [Route("api/movies")]
+    [ServiceFilter(typeof(LocationFilter))]
     public class MovieController : BaseController
     {
 

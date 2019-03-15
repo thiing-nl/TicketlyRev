@@ -18,6 +18,8 @@ namespace Screend.Profiles
             CreateMap<Movie, MovieDTO>();
             CreateMap<Theater, TheaterDTO>();
             CreateMap<TheaterDTO, Theater>();
+            CreateMap<Theater, TheaterMinimalDTO>();
+            CreateMap<TheaterMinimalDTO, Theater>();
             CreateMap<TheaterRow, TheaterRowDTO>();
             CreateMap<TheaterRowDTO, TheaterRow>();
             CreateMap<TheaterChair, TheaterChairDTO>();
