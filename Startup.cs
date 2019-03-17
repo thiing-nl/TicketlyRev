@@ -66,6 +66,7 @@ namespace Screend
             services.AddTransient<IOrderChairRepository, OrderChairRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
+            services.AddTransient<ILocationMovieRepository, LocationMovieRepository>();
 
             // Services
             services.AddTransient<IMovieService, MovieService>();
