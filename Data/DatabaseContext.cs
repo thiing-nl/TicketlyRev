@@ -84,6 +84,7 @@ namespace Screend.Data
             {
                 Id = 1,
                 Name = "Tilburg",
+                Address = "Pieter vreedeplein 174, 5038 BW Tilburg",
                 Movies = new LocationMovie[0],
                 Theaters = new Theater[0],
                 Schedules = new Schedule[0]
@@ -93,6 +94,7 @@ namespace Screend.Data
             {
                 Id = 2,
                 Name = "Breda",
+                Address = "Chasséveld 15, 4811 DH Breda",
                 Movies = new LocationMovie[0],
                 Theaters = new Theater[0],
                 Schedules = new Schedule[0]

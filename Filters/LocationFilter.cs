@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Screend.Exceptions;
@@ -18,14 +19,15 @@ namespace Screend.Filters
             ActionExecutingContext context,
             ActionExecutionDelegate next)
         {
-            if (context.HttpContext.Request.Headers.ContainsKey("X-Location-Id"))
-            {
-                var resultContext = await next();
+            var parsed = int.TryParse(context.HttpContext.Request.Headers["X-Location-Id"], out var locationId);
+            
+            if (parsed && _locationService.CheckExists(locationId)) {
+                context.HttpContext.Items.Add("Location", _locationService.Get(locationId));
+                await next();
+                return;
             }
-            else
-            {
-                throw new ForbiddenException("You cannot perform this request without an Location provided!");
-            }
+            
+           throw new ForbiddenException("You cannot perform this request without an Location provided!");
         }
     }
 }

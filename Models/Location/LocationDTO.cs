@@ -11,6 +11,8 @@ namespace Screend.Models.Location
         
         public string Name { get; set; }
         
+        public string Address { get; set; }
+        
         public virtual ICollection<TheaterMinimalDTO> Theaters { get; set; }
         
         public virtual ICollection<ScheduleDTO> Schedules { get; set; }

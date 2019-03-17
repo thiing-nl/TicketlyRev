@@ -8,8 +8,8 @@ namespace Screend.Profiles
     {
         public MovieProfile()
         {
-            CreateMap<MovieScheduleDTO, Schedule>();
-            CreateMap<Schedule, MovieScheduleDTO>();
+            CreateMap<Schedule, MovieScheduleDTO>()
+                .ReverseMap();
         }
     }
 }

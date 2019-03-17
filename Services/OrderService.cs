@@ -97,7 +97,6 @@ namespace Screend.Services
                     throw new NotFoundException("Chair not found");
                 }
                 
-                
                 _orderChairRepository.Insert(new OrderChair
                 {
                     Schedule = schedule,
@@ -105,7 +104,6 @@ namespace Screend.Services
                     TheaterChair = chair,
                     Order = order
                 });
-               
             }
             
             _orderRepository.Commit();

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Screend.Entities.Location;
 using Screend.Entities.Movie;
 using Screend.Exceptions;
 using Screend.Repositories;
@@ -8,7 +9,7 @@ namespace Screend.Services
 {
     public interface IMovieService
     {
-        ICollection<Movie> GetAll();
+        ICollection<Movie> GetAllMoviesByLocation(int locationId);
         Movie Get(int id);
         void Delete(int id);
     }
@@ -16,15 +17,19 @@ namespace Screend.Services
     public class MovieService : BaseService, IMovieService
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly ILocationRepository _locationRepository;
 
-        public MovieService(IMovieRepository movieRepository)
+        public MovieService(IMovieRepository movieRepository, ILocationRepository locationRepository)
         {
             _movieRepository = movieRepository;
+            _locationRepository = locationRepository;
         }
 
-        public ICollection<Movie> GetAll()
+        public ICollection<Movie> GetAllMoviesByLocation(int locationId)
         {
-            return _movieRepository.GetAll().ToArray();
+            var location = _locationRepository.GetByID(locationId);
+            
+            return location.Movies.Select(it => it.Movie).ToArray();
         }
 
         public Movie Get(int id)
