@@ -5,6 +5,8 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Screend.Entities.Location;
+using Screend.Filters;
 using Screend.Models.Movie;
 using Screend.Services;
 
@@ -12,6 +14,7 @@ namespace Screend.Controllers
 {
 
     [Route("api/movies")]
+    [ServiceFilter(typeof(LocationFilter))]
     public class MovieController : BaseController
     {
 
@@ -30,12 +33,13 @@ namespace Screend.Controllers
         [ProducesResponseType(typeof(ICollection<MovieWithScheduleDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            var movies = _movieService.GetAll();
+            var location = (Location) HttpContext.Items["Location"];
+            var movies = _movieService.GetAllMoviesByLocation(location.Id);
          
             return Ok(movies.Select(movie => new MovieWithScheduleDTO
             {
                 Movie = Mapper.Map<MovieDTO>(movie),
-                Schedule = Mapper.Map<ICollection<MovieScheduleDTO>>(_scheduleService.GetByMovie(movie.Id)) 
+                Schedule = Mapper.Map<ICollection<MovieScheduleDTO>>(_scheduleService.GetByMovie(movie.Id, location.Id)) 
             }));
         }
 

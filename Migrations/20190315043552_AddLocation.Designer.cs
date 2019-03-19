@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Screend.Data;
 
 namespace Screend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190315043552_AddLocation")]
+    partial class AddLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,8 +24,6 @@ namespace Screend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Address");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
@@ -31,8 +31,8 @@ namespace Screend.Migrations
                     b.ToTable("Location");
 
                     b.HasData(
-                        new { Id = 1, Address = "Pieter vreedeplein 174, 5038 BW Tilburg", Name = "Tilburg" },
-                        new { Id = 2, Address = "Chasséveld 15, 4811 DH Breda", Name = "Breda" }
+                        new { Id = 1, Name = "Tilburg" },
+                        new { Id = 2, Name = "Breda" }
                     );
                 });
 

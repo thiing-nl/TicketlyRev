@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Screend.Entities.Location;
 using Screend.Entities.Order;
 using Screend.Exceptions;
 using Screend.Models.Order;
@@ -24,13 +25,15 @@ namespace Screend.Services
         private readonly IOrderChairRepository _orderChairRepository;
         private readonly IMovieTicketRepository _movieTicketRepository;
         private readonly ITheaterChairRepository _theaterChairRepository;
+        private readonly ILocationMovieRepository _locationMovieRepository;
 
         public OrderService(
             IOrderRepository orderRepository,
             IScheduleRepository scheduleRepository,
             IOrderChairRepository orderChairRepository,
             IMovieTicketRepository movieTicketRepository,
-            ITheaterChairRepository theaterChairRepository
+            ITheaterChairRepository theaterChairRepository,
+            ILocationMovieRepository locationMovieRepository
         )
         {
             _orderRepository = orderRepository;
@@ -38,6 +41,7 @@ namespace Screend.Services
             _orderChairRepository = orderChairRepository;
             _movieTicketRepository = movieTicketRepository;
             _theaterChairRepository = theaterChairRepository;
+            _locationMovieRepository = locationMovieRepository;
         }
 
         public void Update(Order update)
@@ -64,12 +68,21 @@ namespace Screend.Services
             {
                 throw new NotFoundException("Schedule not found");
             }
+
+            var locationMovie = _locationMovieRepository.FirstOrDefault(it =>
+                it.MovieId == schedule.MovieId && it.LocationId == schedule.LocationId);
+            
+            if (locationMovie == null)
+            {
+                throw new NotFoundException("Movie at this location not found");
+            }
             
             Order order = new Order
             {
                 UserId = 1,
                 Paid = 0,
-                MollieId = mollieId
+                MollieId = mollieId,
+                LocationMovie = locationMovie
             };
             
             _orderRepository.Insert(order);
@@ -97,7 +110,6 @@ namespace Screend.Services
                     throw new NotFoundException("Chair not found");
                 }
                 
-                
                 _orderChairRepository.Insert(new OrderChair
                 {
                     Schedule = schedule,
@@ -105,7 +117,6 @@ namespace Screend.Services
                     TheaterChair = chair,
                     Order = order
                 });
-               
             }
             
             _orderRepository.Commit();

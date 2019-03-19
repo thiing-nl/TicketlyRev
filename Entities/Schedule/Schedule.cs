@@ -13,6 +13,10 @@ namespace Screend.Entities.Schedule
         public int MovieId { get; set; }
         
         public int TheaterId { get; set; }
+        
+        public int LocationId { get; set; }
+        
+        public virtual Location.Location Location { get; set; }
 
         public virtual Theater.Theater Theater { get; set; }
         

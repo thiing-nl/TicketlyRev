@@ -23,6 +23,7 @@ using Newtonsoft.Json.Linq;
 using Screend.Data;
 using Screend.Entities.Theater;
 using Screend.Exceptions;
+using Screend.Filters;
 using Screend.Profiles;
 using Screend.Repositories;
 using Screend.Services;
@@ -64,6 +65,8 @@ namespace Screend
             services.AddTransient<ITheaterChairRepository, TheaterChairRepository>();
             services.AddTransient<IOrderChairRepository, OrderChairRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ILocationRepository, LocationRepository>();
+            services.AddTransient<ILocationMovieRepository, LocationMovieRepository>();
 
             // Services
             services.AddTransient<IMovieService, MovieService>();
@@ -71,6 +74,10 @@ namespace Screend
             services.AddTransient<IScheduleService, ScheduleService>();
             services.AddTransient<ITheaterService, TheaterService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ILocationService, LocationService>();
+            
+            // Filters
+            services.AddScoped<LocationFilter>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.Configure<MvcOptions>(options =>
@@ -119,6 +126,8 @@ namespace Screend
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+
+                c.OperationFilter<SwaggerLocationHeader>();
                 
                 c.AddSecurityDefinition("Bearer", new ApiKeyScheme()
                 {
