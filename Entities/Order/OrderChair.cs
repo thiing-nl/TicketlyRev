@@ -11,7 +11,7 @@ namespace Screend.Entities.Order
         
         public int TheaterChairId { get; set; }
         
-        public int MovieTicketId { get; set; }
+        public int TicketId { get; set; }
         
         public int ScheduleId { get; set; }
         
@@ -21,6 +21,6 @@ namespace Screend.Entities.Order
         
         public virtual Schedule.Schedule Schedule { get; set; }
         
-        public virtual MovieTicket MovieTicket { get; set; }
+        public virtual Ticket.Ticket Ticket { get; set; }
     }
 }

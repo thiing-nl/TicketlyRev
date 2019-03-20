@@ -5,6 +5,7 @@ using Screend.Entities.Movie;
 using Screend.Entities.Order;
 using Screend.Entities.Schedule;
 using Screend.Entities.Theater;
+using Screend.Entities.Ticket;
 using Screend.Entities.User;
 
 namespace Screend.Data
@@ -22,7 +23,8 @@ namespace Screend.Data
         // Movie
         public DbSet<Movie> Movies { get; set; }
         
-        public DbSet<MovieTicket> MovieTickets { get; set; }
+        // Ticket
+        public DbSet<Ticket> Tickets { get; set; }
         
         // Order
         public DbSet<Order> Orders { get; set; }
@@ -48,31 +50,31 @@ namespace Screend.Data
         {
             #region Ticket seed
 
-            modelBuilder.Entity<MovieTicket>().HasData(new MovieTicket
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 1,
-                Name = "Normaal < 120min",
+                Title = "Normaal < 120min",
                 Price = 8.50
             });
             
-            modelBuilder.Entity<MovieTicket>().HasData(new MovieTicket
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 2,
-                Name = "Normaal > 120min",
+                Title = "Normaal > 120min",
                 Price = 9.00
             });
             
-            modelBuilder.Entity<MovieTicket>().HasData(new MovieTicket
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 3,
-                Name = "3D Film < 120min",
+                Title = "3D Film < 120min",
                 Price = 11.00
             });
             
-            modelBuilder.Entity<MovieTicket>().HasData(new MovieTicket
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 4,
-                Name = "3D Film > 120min",
+                Title = "3D Film > 120min",
                 Price = 11.50
             });
             

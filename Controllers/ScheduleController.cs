@@ -9,7 +9,6 @@ using Screend.Entities.Schedule;
 using Screend.Filters;
 using Screend.Models.Schedule;
 using Screend.Models.Theater;
-using Screend.Repositories;
 using Screend.Services;
 
 namespace Screend.Controllers
