@@ -48,6 +48,20 @@ namespace Screend.Data
         // Database seeders
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region User seed
+                
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = 1,
+                FirstName = "order",
+                LastName = "order",
+                Username = "order",
+                Password = "order",
+                AccountType = AccountType.User
+            });
+            
+            #endregion
+            
             #region Ticket seed
 
             modelBuilder.Entity<Ticket>().HasData(new Ticket
