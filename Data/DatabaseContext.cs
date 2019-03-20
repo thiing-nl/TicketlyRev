@@ -53,29 +53,113 @@ namespace Screend.Data
             modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 1,
-                Title = "Normaal < 120min",
+                Title = "Normaal",
                 Price = 8.50
             });
             
             modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 2,
-                Title = "Normaal > 120min",
+                Title = "Normaal",
                 Price = 9.00
             });
             
             modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 3,
-                Title = "3D Film < 120min",
+                Title = "3D Film",
                 Price = 11.00
             });
             
             modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 4,
-                Title = "3D Film > 120min",
+                Title = "3D Film",
                 Price = 11.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 5,
+                Title = "Normaal Kind",
+                Price = 7.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 6,
+                Title = "Normaal Kind",
+                Price = 7.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 7,
+                Title = "3D Kind",
+                Price = 9.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 8,
+                Title = "3D Kind",
+                Price = 10.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 9,
+                Title = "Normaal Student",
+                Price = 7.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 10,
+                Title = "Normaal Student",
+                Price = 7.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 11,
+                Title = "3D Student",
+                Price = 9.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 12,
+                Title = "3D Student",
+                Price = 10.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 13,
+                Title = "Normaal 65+",
+                Price = 7.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 14,
+                Title = "Normaal 65+",
+                Price = 7.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 15,
+                Title = "3D 65+",
+                Price = 9.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 16,
+                Title = "3D 65+",
+                Price = 10.00
             });
             
             #endregion
