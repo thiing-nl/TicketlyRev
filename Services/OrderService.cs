@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using Screend.Entities.Location;
 using Screend.Entities.Order;
 using Screend.Exceptions;
 using Screend.Models.Order;
@@ -21,25 +18,25 @@ namespace Screend.Services
     public class OrderService : BaseService, IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly ITicketRepository _ticketRepository;
         private readonly IScheduleRepository _scheduleRepository;
         private readonly IOrderChairRepository _orderChairRepository;
-        private readonly IMovieTicketRepository _movieTicketRepository;
         private readonly ITheaterChairRepository _theaterChairRepository;
         private readonly ILocationMovieRepository _locationMovieRepository;
 
         public OrderService(
             IOrderRepository orderRepository,
+            ITicketRepository ticketRepository,
             IScheduleRepository scheduleRepository,
             IOrderChairRepository orderChairRepository,
-            IMovieTicketRepository movieTicketRepository,
             ITheaterChairRepository theaterChairRepository,
             ILocationMovieRepository locationMovieRepository
         )
         {
             _orderRepository = orderRepository;
+            _ticketRepository = ticketRepository;
             _scheduleRepository = scheduleRepository;
             _orderChairRepository = orderChairRepository;
-            _movieTicketRepository = movieTicketRepository;
             _theaterChairRepository = theaterChairRepository;
             _locationMovieRepository = locationMovieRepository;
         }
@@ -96,7 +93,7 @@ namespace Screend.Services
                     throw new BadRequestException("Chair already booked");
                 }
 
-                var ticket = _movieTicketRepository.GetByID(orderChair.TicketId);
+                var ticket = _ticketRepository.GetByID(orderChair.TicketId);
 
                 if (ticket == null)
                 {
@@ -113,7 +110,7 @@ namespace Screend.Services
                 _orderChairRepository.Insert(new OrderChair
                 {
                     Schedule = schedule,
-                    MovieTicket = ticket,
+                    Ticket = ticket,
                     TheaterChair = chair,
                     Order = order
                 });
