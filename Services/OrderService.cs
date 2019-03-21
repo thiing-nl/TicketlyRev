@@ -77,7 +77,7 @@ namespace Screend.Services
                 throw new NotFoundException("Movie at this location not found");
             }
             
-            Order order = new Order
+            var order = new Order
             {
                 UserId = 1,
                 Paid = 0,

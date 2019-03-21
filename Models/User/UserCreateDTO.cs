@@ -3,7 +3,7 @@ using Screend.Entities.User;
 
 namespace Screend.Models.User
 {
-    public class UserRegisterDTO
+    public class UserCreateDTO
     {
         [Required]
         public string FirstName { get; set; }
@@ -16,5 +16,9 @@ namespace Screend.Models.User
         
         [Required]
         public string Password { get; set; }
+
+        public AccountType AccountType { get; set; } = AccountType.User;
+
+        public bool Locked { get; set; } = false;
     }
 }

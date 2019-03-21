@@ -11,6 +11,7 @@ namespace Screend.Profiles
         public UserProfile()
         {
             CreateMap<UserRegisterDTO, User>();
+            CreateMap<UserCreateDTO, User>();
             CreateMap<User, UserDTO>();
             CreateMap<UserToken, UserTokenDTO>();
             CreateMap<User, AuthorizedUserDTO>()
