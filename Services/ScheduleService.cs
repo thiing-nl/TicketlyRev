@@ -12,6 +12,7 @@ namespace Screend.Services
     public interface IScheduleService
     {
         ICollection<Schedule> GetByDay(DateTime date, int locationId);
+        ICollection<Schedule> GetByWeek(DateTime date, int locationId);
         ICollection<Schedule> GetByMovie(int movieId, int locationId);
         Schedule GetById(int id);
     }
@@ -34,7 +35,21 @@ namespace Screend.Services
                 next.Day
                 );
             
-            return _scheduleRepository.Get(it => it.Time > date && it.Time < end && it.LocationId == locationId).ToArray();
+            return _scheduleRepository.Get(it => it.Time > date && it.Time < end && it.LocationId == locationId)
+                .ToArray();
+        }
+
+        public ICollection<Schedule> GetByWeek(DateTime date, int locationId)
+        {
+            var next = date.AddDays(7);
+            DateTime end = new DateTime(
+                next.Year,
+                next.Month,
+                next.Day
+            );
+            
+            return _scheduleRepository.Get(it => it.Time > date && it.Time < end && it.LocationId == locationId)
+                .ToArray();
         }
 
         public ICollection<Schedule> GetByMovie(int movieId, int locationId)
