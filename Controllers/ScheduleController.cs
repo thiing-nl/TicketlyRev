@@ -32,7 +32,6 @@ namespace Screend.Controllers
         public IActionResult GetById(int id)
         {
             var schedule = _scheduleService.GetById(id);
-            
             return Ok(MapSchedule(schedule));
         }
         

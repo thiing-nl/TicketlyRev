@@ -38,7 +38,7 @@ namespace Screend.Services
             return _scheduleRepository.Get(it => it.Time > date && it.Time < end && it.LocationId == locationId)
                 .ToArray();
         }
-
+        
         public ICollection<Schedule> GetByWeek(DateTime date, int locationId)
         {
             var next = date.AddDays(7);

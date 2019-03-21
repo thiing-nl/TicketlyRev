@@ -202,6 +202,30 @@ namespace Screend.Data
             
             #endregion
             
+            #region Location Seeder
+            
+            modelBuilder.Entity<Location>().HasData(new Location
+            {
+                Id = 1,
+                Name = "Tilburg",
+                Address = "Pieter vreedeplein 174, 5038 BW Tilburg",
+                Movies = new LocationMovie[0],
+                Theaters = new Theater[0],
+                Schedules = new Schedule[0]
+            });
+            
+            modelBuilder.Entity<Location>().HasData(new Location
+            {
+                Id = 2,
+                Name = "Breda",
+                Address = "Chasséveld 15, 4811 DH Breda",
+                Movies = new LocationMovie[0],
+                Theaters = new Theater[0],
+                Schedules = new Schedule[0]
+            });
+            
+            #endregion
+            
             #region Movie seeder
             
             modelBuilder.Entity<Movie>().HasData(new Movie

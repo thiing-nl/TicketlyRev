@@ -1,4 +1,5 @@
 using System.Linq;
+using Screend.Entities.Location;
 using Screend.Entities.Order;
 using Screend.Exceptions;
 using Screend.Models.Order;
@@ -29,6 +30,7 @@ namespace Screend.Services
             ITicketRepository ticketRepository,
             IScheduleRepository scheduleRepository,
             IOrderChairRepository orderChairRepository,
+            IMovieTicketRepository movieTicketRepository,
             ITheaterChairRepository theaterChairRepository,
             ILocationMovieRepository locationMovieRepository
         )
@@ -68,13 +70,13 @@ namespace Screend.Services
 
             var locationMovie = _locationMovieRepository.FirstOrDefault(it =>
                 it.MovieId == schedule.MovieId && it.LocationId == schedule.LocationId);
-            
+                
             if (locationMovie == null)
             {
                 throw new NotFoundException("Movie at this location not found");
             }
             
-            Order order = new Order
+            var order = new Order
             {
                 UserId = 1,
                 Paid = 0,

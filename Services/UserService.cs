@@ -1,8 +1,12 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Screend.Entities.User;
@@ -38,6 +42,30 @@ namespace Screend.Services
         /// <exception cref="NotFoundException">User not found</exception>
         /// <returns>User</returns>
         User Get(int userId);
+
+        /// <summary>
+        /// Get All Users
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<User> GetAll();
+        
+        /// <summary>
+        /// Create user
+        /// </summary>
+        /// <param name="userCreateDTO"></param>
+        /// <returns></returns>
+        User Create(UserCreateDTO userCreateDTO);
+
+        /// <summary>
+        /// Delete All users except user with id 1
+        /// </summary>
+        void DeleteAll();
+        
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="id"></param>
+        void Delete(int id);
     }
 
     public class UserService : BaseService, IUserService
@@ -116,6 +144,29 @@ namespace Screend.Services
             return mappedUser;
         }
 
+        /// <inheritdoc cref="IUserService.Create" />
+        public User Create(UserCreateDTO userCreateDTO)
+        {
+            var user = _userRepository
+                .FirstOrDefault(x => x.Username == userCreateDTO.Username);
+
+            // User doesn't exist
+            if (user != null)
+                throw new ForbiddenException("User with this username already exists.");
+
+            // Map user
+            var mappedUser = Mapper.Map<User>(userCreateDTO);
+
+            // Encrypt password
+            mappedUser.Password = BCrypt.Net.BCrypt.HashPassword(mappedUser.Password);
+
+            // Add user
+            _userRepository.Insert(mappedUser);
+            _userRepository.Commit();
+
+            return mappedUser;
+        }
+
         /// <summary>
         /// Issue token
         /// </summary>
@@ -151,6 +202,41 @@ namespace Screend.Services
                 SecurityToken = securityToken,
                 Token = token
             };
+        }
+
+        /// <inheritdoc cref="IUserService.GetAll" />
+        public IEnumerable<User> GetAll()
+        {
+            return _userRepository.GetAll().ToArray();
+        }
+
+        /// <inheritdoc cref="IUserService.DeleteAll" />
+        public void DeleteAll()
+        {
+            foreach (var user in _userRepository.GetAll())
+            {
+                if (user.Id == 1)
+                {
+                    continue;
+                }
+                
+                _userRepository.Delete(user);
+            }
+            _userRepository.Commit();
+        }
+
+        /// <inheritdoc cref="IUserService.Delete" />
+        public void Delete(int id)
+        {
+            var user = _userRepository.GetByID(id);
+            
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+            
+            _userRepository.Delete(user);
+            _userRepository.Commit();
         }
     }
 }
