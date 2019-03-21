@@ -47,6 +47,18 @@ namespace Screend.Controllers
             return Ok(schedules.ToArray());
         }
 
+        [HttpGet("week")]
+        [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
+        public IActionResult GetByWeek()
+        {
+            var location = (Location) HttpContext.Items["Location"];
+            DateTime date = DateTime.Now;
+            var schedules = _scheduleService.GetByWeek(date, location.Id)
+                .Select(MapSchedule);
+            
+            return Ok(schedules.ToArray());
+        }
+
         #endregion
 
         #region Private Methods
