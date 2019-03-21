@@ -5,6 +5,7 @@ using Screend.Entities.Movie;
 using Screend.Entities.Order;
 using Screend.Entities.Schedule;
 using Screend.Entities.Theater;
+using Screend.Entities.Ticket;
 using Screend.Entities.User;
 
 namespace Screend.Data
@@ -22,7 +23,8 @@ namespace Screend.Data
         // Movie
         public DbSet<Movie> Movies { get; set; }
         
-        public DbSet<MovieTicket> MovieTickets { get; set; }
+        // Ticket
+        public DbSet<Ticket> Tickets { get; set; }
         
         // Order
         public DbSet<Order> Orders { get; set; }
@@ -46,34 +48,156 @@ namespace Screend.Data
         // Database seeders
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region Ticket seed
-
-            modelBuilder.Entity<MovieTicket>().HasData(new MovieTicket
+            #region User seed
+                
+            modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 1,
-                Name = "Normaal < 120min",
+                FirstName = "order",
+                LastName = "order",
+                Username = "order",
+                Password = "order",
+                AccountType = AccountType.User
+            });
+            
+            #endregion
+            
+            #region Ticket seed
+
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 1,
+                Title = "Normaal",
                 Price = 8.50
             });
             
-            modelBuilder.Entity<MovieTicket>().HasData(new MovieTicket
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 2,
-                Name = "Normaal > 120min",
+                Title = "Normaal",
                 Price = 9.00
             });
             
-            modelBuilder.Entity<MovieTicket>().HasData(new MovieTicket
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 3,
-                Name = "3D Film < 120min",
+                Title = "3D Film",
                 Price = 11.00
             });
             
-            modelBuilder.Entity<MovieTicket>().HasData(new MovieTicket
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
             {
                 Id = 4,
-                Name = "3D Film > 120min",
+                Title = "3D Film",
                 Price = 11.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 5,
+                Title = "Normaal Kind",
+                Price = 7.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 6,
+                Title = "Normaal Kind",
+                Price = 7.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 7,
+                Title = "3D Kind",
+                Price = 9.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 8,
+                Title = "3D Kind",
+                Price = 10.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 9,
+                Title = "Normaal Student",
+                Price = 7.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 10,
+                Title = "Normaal Student",
+                Price = 7.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 11,
+                Title = "3D Student",
+                Price = 9.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 12,
+                Title = "3D Student",
+                Price = 10.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 13,
+                Title = "Normaal 65+",
+                Price = 7.00
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 14,
+                Title = "Normaal 65+",
+                Price = 7.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 15,
+                Title = "3D 65+",
+                Price = 9.50
+            });
+            
+            modelBuilder.Entity<Ticket>().HasData(new Ticket
+            {
+                Id = 16,
+                Title = "3D 65+",
+                Price = 10.00
+            });
+            
+            #endregion
+            
+            #region Location Seeder
+            
+            modelBuilder.Entity<Location>().HasData(new Location
+            {
+                Id = 1,
+                Name = "Tilburg",
+                Address = "Pieter vreedeplein 174, 5038 BW Tilburg",
+                Movies = new LocationMovie[0],
+                Theaters = new Theater[0],
+                Schedules = new Schedule[0]
+            });
+            
+            modelBuilder.Entity<Location>().HasData(new Location
+            {
+                Id = 2,
+                Name = "Breda",
+                Address = "Chasséveld 15, 4811 DH Breda",
+                Movies = new LocationMovie[0],
+                Theaters = new Theater[0],
+                Schedules = new Schedule[0]
             });
             
             #endregion

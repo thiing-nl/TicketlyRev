@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Screend.Data;
 
 namespace Screend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190320210753_MovieTickets")]
+    partial class MovieTickets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -866,22 +868,10 @@ namespace Screend.Migrations
                     b.ToTable("Tickets");
 
                     b.HasData(
-                        new { Id = 1, Price = 8.5, Title = "Normaal" },
-                        new { Id = 2, Price = 9.0, Title = "Normaal" },
-                        new { Id = 3, Price = 11.0, Title = "3D Film" },
-                        new { Id = 4, Price = 11.5, Title = "3D Film" },
-                        new { Id = 5, Price = 7.0, Title = "Normaal Kind" },
-                        new { Id = 6, Price = 7.5, Title = "Normaal Kind" },
-                        new { Id = 7, Price = 9.5, Title = "3D Kind" },
-                        new { Id = 8, Price = 10.0, Title = "3D Kind" },
-                        new { Id = 9, Price = 7.0, Title = "Normaal Student" },
-                        new { Id = 10, Price = 7.5, Title = "Normaal Student" },
-                        new { Id = 11, Price = 9.5, Title = "3D Student" },
-                        new { Id = 12, Price = 10.0, Title = "3D Student" },
-                        new { Id = 13, Price = 7.0, Title = "Normaal 65+" },
-                        new { Id = 14, Price = 7.5, Title = "Normaal 65+" },
-                        new { Id = 15, Price = 9.5, Title = "3D 65+" },
-                        new { Id = 16, Price = 10.0, Title = "3D 65+" }
+                        new { Id = 1, Price = 8.5, Title = "Normaal < 120min" },
+                        new { Id = 2, Price = 9.0, Title = "Normaal > 120min" },
+                        new { Id = 3, Price = 11.0, Title = "3D Film < 120min" },
+                        new { Id = 4, Price = 11.5, Title = "3D Film > 120min" }
                     );
                 });
 
@@ -903,10 +893,6 @@ namespace Screend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new { Id = 1, AccountType = 0, FirstName = "order", LastName = "order", Password = "order", Username = "order" }
-                    );
                 });
 
             modelBuilder.Entity("Screend.Entities.User.UserToken", b =>

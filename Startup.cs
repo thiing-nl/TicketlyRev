@@ -58,7 +58,7 @@ namespace Screend
 
             // Repositories
             services.AddTransient<IMovieRepository, MovieRepository>();
-            services.AddTransient<IMovieTicketRepository, MovieTicketRepository>();
+            services.AddTransient<ITicketRepository, TicketRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IScheduleRepository, ScheduleRepository>();
             services.AddTransient<ITheaterRepository, TheaterRepository>();
@@ -67,6 +67,7 @@ namespace Screend
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
             services.AddTransient<ILocationMovieRepository, LocationMovieRepository>();
+            services.AddTransient<IScheduleTicketRepository, ScheduleTicketRepository>();
 
             // Services
             services.AddTransient<IMovieService, MovieService>();
@@ -75,6 +76,7 @@ namespace Screend
             services.AddTransient<ITheaterService, TheaterService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ILocationService, LocationService>();
+            services.AddTransient<ITicketService, TicketService>();
             
             // Filters
             services.AddScoped<LocationFilter>();

@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Screend.Entities.Location;
 using Screend.Entities.Schedule;
+using Screend.Exceptions;
 using Screend.Filters;
 using Screend.Models.Schedule;
 using Screend.Models.Theater;
-using Screend.Repositories;
 using Screend.Services;
 
 namespace Screend.Controllers
@@ -32,17 +32,49 @@ namespace Screend.Controllers
         public IActionResult GetById(int id)
         {
             var schedule = _scheduleService.GetById(id);
-            
             return Ok(MapSchedule(schedule));
         }
         
         [HttpGet("day")]
         [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
-        public IActionResult GetByDay()
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetByDay(string time)
+        {
+            var date = DateTime.Now;
+            
+            if (time != null)
+            {
+                string[] input = time.Split("-");
+
+                try
+                {
+                    date = new DateTime(
+                        Int32.Parse(input[0]),
+                        Int32.Parse(input[1]),
+                        Int32.Parse(input[2]));
+                }
+                catch (Exception e)
+                {
+                    throw new BadRequestException("Datetime not right formatted");
+                }
+               
+            }
+            
+            var location = (Location) HttpContext.Items["Location"];
+            
+            var schedules = _scheduleService.GetByDay(date, location.Id)
+                .Select(MapSchedule);
+            
+            return Ok(schedules.ToArray());
+        }
+
+        [HttpGet("week")]
+        [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
+        public IActionResult GetByWeek()
         {
             var location = (Location) HttpContext.Items["Location"];
             DateTime date = DateTime.Now;
-            var schedules = _scheduleService.GetByDay(date, location.Id)
+            var schedules = _scheduleService.GetByWeek(date, location.Id)
                 .Select(MapSchedule);
             
             return Ok(schedules.ToArray());

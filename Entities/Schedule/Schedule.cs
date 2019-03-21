@@ -23,5 +23,7 @@ namespace Screend.Entities.Schedule
         public virtual Movie.Movie Movie { get; set; }
         
         public virtual ICollection<OrderChair> OrderChairs { get; set; }
+        
+        public virtual ICollection<ScheduleTicket> ScheduleTickets { get; set; }
     }
 }
