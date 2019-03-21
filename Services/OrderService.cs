@@ -30,7 +30,6 @@ namespace Screend.Services
             ITicketRepository ticketRepository,
             IScheduleRepository scheduleRepository,
             IOrderChairRepository orderChairRepository,
-            IMovieTicketRepository movieTicketRepository,
             ITheaterChairRepository theaterChairRepository,
             ILocationMovieRepository locationMovieRepository
         )
