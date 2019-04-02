@@ -3,6 +3,7 @@ using System.Linq;
 using Screend.Entities.Location;
 using Screend.Entities.Movie;
 using Screend.Exceptions;
+using Screend.Models.Movie;
 using Screend.Repositories;
 
 namespace Screend.Services
@@ -11,6 +12,8 @@ namespace Screend.Services
     {
         ICollection<Movie> GetAllMoviesByLocation(int locationId);
         Movie Get(int id);
+        MovieReview AddMovieReview(MovieReviewCreateDTO movieReviewCreateDto, int movieId);
+        ICollection<MovieReview> GetMovieReviewsByMovieId(int movieId);
         void Delete(int id);
     }
     
@@ -18,11 +21,17 @@ namespace Screend.Services
     {
         private readonly IMovieRepository _movieRepository;
         private readonly ILocationRepository _locationRepository;
+        private readonly IMovieReviewRepository _movieReviewRepository;
 
-        public MovieService(IMovieRepository movieRepository, ILocationRepository locationRepository)
+        public MovieService(
+            IMovieRepository movieRepository, 
+            ILocationRepository locationRepository,
+            IMovieReviewRepository movieReviewRepository
+            )
         {
             _movieRepository = movieRepository;
             _locationRepository = locationRepository;
+            _movieReviewRepository = movieReviewRepository;
         }
 
         public ICollection<Movie> GetAllMoviesByLocation(int locationId)
@@ -41,6 +50,28 @@ namespace Screend.Services
             }
 
             return movie;
+        }
+
+        public MovieReview AddMovieReview(MovieReviewCreateDTO movieReviewCreateDto, int movieId)
+        {
+            var movie = Get(movieId);
+            var movieReview = new MovieReview
+            {
+                Movie = movie,
+                ReviewerName = movieReviewCreateDto.ReviewerName,
+                Review = movieReviewCreateDto.Review
+            };
+
+            _movieReviewRepository.Insert(movieReview);
+            _movieReviewRepository.Commit();
+
+            return movieReview;
+        }
+
+        public ICollection<MovieReview> GetMovieReviewsByMovieId(int movieId)
+        {
+            var movie = Get(movieId);
+            return _movieReviewRepository.Get(mr => mr.MovieId == movie.Id).ToArray();
         }
 
         public void Delete(int id)

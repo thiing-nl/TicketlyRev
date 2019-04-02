@@ -1,7 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -51,9 +50,32 @@ namespace Screend.Controllers
             var movie = _movieService.Get(id);
             return Ok(Mapper.Map<MovieDTO>(movie));
         }
+
+        [HttpGet("{id}/reviews")]
+        [ProducesResponseType(typeof(ICollection<MovieReviewDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetReviewsByMovieId(int id)
+        {
+            var movieReviews = _movieService.GetMovieReviewsByMovieId(id);
+            return Ok(Mapper.Map<ICollection<MovieReviewDTO>>(movieReviews));
+        }
         
         #endregion
        
+        #region PostRoutes
+
+        [HttpPost("{id}/reviews")]
+        [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Create(int id, [FromBody] MovieReviewCreateDTO reviewCreateDto)
+        {
+            var movieReview = _movieService.AddMovieReview(reviewCreateDto,id);
+            return Ok(Mapper.Map<MovieReviewDTO>(movieReview));
+        }
+
+        #endregion
+        
         #region DeleteRoutes
 
         [HttpDelete("{id}")]

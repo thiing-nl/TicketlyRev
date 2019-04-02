@@ -58,6 +58,7 @@ namespace Screend
 
             // Repositories
             services.AddTransient<IMovieRepository, MovieRepository>();
+            services.AddTransient<IMovieReviewRepository, MovieReviewRepository>();
             services.AddTransient<ITicketRepository, TicketRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IScheduleRepository, ScheduleRepository>();

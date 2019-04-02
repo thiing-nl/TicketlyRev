@@ -53,7 +53,7 @@ namespace Screend.Controllers
                         Int32.Parse(input[1]),
                         Int32.Parse(input[2]));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw new BadRequestException("Datetime not right formatted");
                 }

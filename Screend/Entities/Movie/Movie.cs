@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Screend.Entities.Movie
 {
     public class Movie
@@ -21,6 +23,8 @@ namespace Screend.Entities.Movie
         public string Rating { get; set; }
         
         public string Img { get; set; }
+        
+        public virtual ICollection<MovieReview> MovieReviews { get; set; }
         
     }
 }
