@@ -81,7 +81,7 @@ namespace Screend.Services
         public ICollection<MovieReview> GetMovieReviewsByMovieId(int movieId)
         {
             var movie = Get(movieId);
-            return _movieReviewRepository.Get(mr => mr.MovieId == movie.Id).ToArray();
+            return _movieReviewRepository.GetReviewsByMovieId(movie.Id);
         }
 
         public void Delete(int id)

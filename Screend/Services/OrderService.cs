@@ -73,9 +73,9 @@ namespace Screend.Services
                 throw new NotFoundException("Schedule not found");
             }
 
-            var locationMovie = _locationMovieRepository.FirstOrDefault(it =>
-                it.MovieId == schedule.MovieId && it.LocationId == schedule.LocationId);
-                
+            var locationMovie =
+                _locationMovieRepository.GetLocationMovieByLocationIdAndMovieId(schedule.LocationId, schedule.MovieId);
+            
             if (locationMovie == null)
             {
                 throw new NotFoundException("Movie at this location not found");
@@ -93,8 +93,9 @@ namespace Screend.Services
             
             foreach (var orderChair in orderDto.OrderChairs)
             {
-                var bookedChair = _orderChairRepository.Get(it =>
-                    it.TheaterChairId == orderChair.ChairId && it.ScheduleId == schedule.Id).FirstOrDefault();
+                var bookedChair =
+                    _orderChairRepository.GetOrderChairByChairIdAndScheduleId(orderChair.ChairId, schedule.Id);
+                
                 if (bookedChair != null)
                 {
                     throw new BadRequestException("Chair already booked");
@@ -147,11 +148,10 @@ namespace Screend.Services
                         {
                             throw new NotFoundException("Chair not found");
                         }
-                        
-                        var bookedChair = _orderChairRepository.Get(it =>
-                            it.TheaterChairId == orderUpdateChairDto.ChairUpdateId 
-                            && it.ScheduleId == orderChair.ScheduleId
-                        ).FirstOrDefault();
+
+                        var bookedChair =
+                            _orderChairRepository.GetOrderChairByChairIdAndScheduleId(orderUpdateChairDto.ChairUpdateId,
+                                orderChair.ScheduleId);
 
                         if (bookedChair != null)
                         {

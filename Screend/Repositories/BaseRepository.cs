@@ -9,13 +9,7 @@ namespace Screend.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        IQueryable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "");
         IQueryable<TEntity> GetAll(); 
-        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter = null);
-        
         DbSet<TEntity> GetSet();
         TEntity GetByID(object id);
         void Insert(TEntity entity);
@@ -26,16 +20,16 @@ namespace Screend.Repositories
     
     public class BaseRepository<TEntity> where TEntity : class 
     {
-        protected readonly DatabaseContext Context;
-        protected readonly DbSet<TEntity> _dbSet;
+        private readonly DatabaseContext _context;
+        private readonly DbSet<TEntity> _dbSet;
 
         protected BaseRepository(DatabaseContext context)
         {
-            this.Context = context;
-            this._dbSet = context.Set<TEntity>();
+            _context = context;
+            _dbSet = context.Set<TEntity>();
         }
 
-        public virtual IQueryable<TEntity> Get(
+        protected virtual IQueryable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
@@ -61,7 +55,7 @@ namespace Screend.Repositories
             return _dbSet.Select(row => row);
         }
         
-        public virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter)
+        protected virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> filter)
         {
             var entity = _dbSet.FirstOrDefault(filter);
 
@@ -91,7 +85,7 @@ namespace Screend.Repositories
 
         public virtual void Delete(TEntity entityToDelete)
         {
-            if (Context.Entry(entityToDelete).State == EntityState.Detached)
+            if (_context.Entry(entityToDelete).State == EntityState.Detached)
             {
                 _dbSet.Attach(entityToDelete);
             }
@@ -100,7 +94,7 @@ namespace Screend.Repositories
 
         public virtual void Commit()
         {
-            Context.SaveChanges();
+            _context.SaveChanges();
         }
     }
    
