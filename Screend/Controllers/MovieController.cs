@@ -67,11 +67,19 @@ namespace Screend.Controllers
         [HttpPost("{id}/reviews")]
         [ProducesResponseType(typeof(MovieReviewDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Create(int id, [FromBody] MovieReviewCreateDTO reviewCreateDto)
+        public IActionResult CreateReview(int id, [FromBody] MovieReviewCreateDTO reviewCreateDto)
         {
-            var movieReview = _movieService.AddMovieReview(reviewCreateDto,id);
+            var movieReview = _movieService.CreateMovieReview(reviewCreateDto,id);
             return Ok(Mapper.Map<MovieReviewDTO>(movieReview));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(MovieDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult CreateMovie([FromBody] MovieCreateDTO movieCreateDto)
+        {
+            var movie = _movieService.CreateMovie(movieCreateDto);
+            return Ok(Mapper.Map<MovieDTO>(movie));
         }
 
         #endregion

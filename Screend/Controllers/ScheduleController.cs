@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +83,21 @@ namespace Screend.Controllers
 
         #endregion
 
+        #region PostRoutes
+
+        [HttpPost]
+        [ProducesResponseType(typeof(ScheduleDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult CreateSchedule([FromBody] ScheduleCreateDTO scheduleCreateDto)
+        {
+            var location = (Location) HttpContext.Items["Location"];
+            var schedule = _scheduleService.CreateSchedule(scheduleCreateDto, location);
+            return Ok(MapSchedule(schedule));
+        }
+
+        #endregion    
+        
         #region Private Methods
 
         /// <summary>

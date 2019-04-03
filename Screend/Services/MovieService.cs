@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Screend.Entities.Location;
 using Screend.Entities.Movie;
 using Screend.Exceptions;
@@ -12,7 +13,8 @@ namespace Screend.Services
     {
         ICollection<Movie> GetAllMoviesByLocation(int locationId);
         Movie Get(int id);
-        MovieReview AddMovieReview(MovieReviewCreateDTO movieReviewCreateDto, int movieId);
+        Movie CreateMovie(MovieCreateDTO movieCreateDto);
+        MovieReview CreateMovieReview(MovieReviewCreateDTO movieReviewCreateDto, int movieId);
         ICollection<MovieReview> GetMovieReviewsByMovieId(int movieId);
         void Delete(int id);
     }
@@ -52,7 +54,15 @@ namespace Screend.Services
             return movie;
         }
 
-        public MovieReview AddMovieReview(MovieReviewCreateDTO movieReviewCreateDto, int movieId)
+        public Movie CreateMovie(MovieCreateDTO movieCreateDto)
+        {
+            var movie = Mapper.Map<Movie>(movieCreateDto);
+            _movieRepository.Insert(movie);
+            _movieRepository.Commit();
+            return movie;
+        }
+
+        public MovieReview CreateMovieReview(MovieReviewCreateDTO movieReviewCreateDto, int movieId)
         {
             var movie = Get(movieId);
             var movieReview = new MovieReview

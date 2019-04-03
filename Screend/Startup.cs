@@ -122,6 +122,7 @@ namespace Screend
                 cfg.AddProfiles(typeof(UserProfile).Assembly);
                 cfg.AddProfiles(typeof(ScheduleProfile).Assembly);
                 cfg.AddProfiles(typeof(MovieProfile).Assembly);
+                cfg.AddProfiles(typeof(OrderProfile).Assembly);
             });
             services.AddAutoMapper();
             

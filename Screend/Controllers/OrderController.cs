@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,6 +13,7 @@ using Screend.Entities.Location;
 using Screend.Entities.Order;
 using Screend.Exceptions;
 using Screend.Models.Order;
+using Screend.Models.Schedule;
 using Screend.Services;
 
 namespace Screend.Controllers
@@ -65,7 +68,7 @@ namespace Screend.Controllers
         #region PostRoutes
 
         [HttpPost("create")]
-        [ProducesResponseType(typeof(OrderDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(OrderPaymentDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Create([FromBody] OrderCreateDTO orderCreateDto)
@@ -94,12 +97,12 @@ namespace Screend.Controllers
                 var content = await result.Content.ReadAsStringAsync();
                 
                 dynamic decodedObject = JsonConvert.DeserializeObject(content);
-
+                
                 var link = decodedObject._links.checkout.href;
                 var id = decodedObject.id;
                 
                 var order = _orderService.Create(orderCreateDto, id.ToString());
-                var mappedOrder = new OrderDTO();
+                var mappedOrder = new OrderPaymentDTO();
                 mappedOrder.Id = order.Id;
                 mappedOrder.PaymentLink = link;
                 return Ok(mappedOrder);
@@ -108,6 +111,34 @@ namespace Screend.Controllers
 
         #endregion
         
+        #region UpdateRoutes
+
+        [HttpPut("{id}/chairs")]
+        [ProducesResponseType(typeof(OrderDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult ChangeSeatsForOrder(
+            int id, [FromBody] ICollection<OrderUpdateChairDTO> orderChairUpdateDtos
+        )
+        {
+            var order = _orderService.UpdateChairs(id, orderChairUpdateDtos);
+            return Ok(Mapper.Map<OrderDTO>(order));
+        }
+        
+        #endregion
+        
+        #region DeleteRoutes
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult DeleteById(int id)
+        {
+            _orderService.DeleteById(id);
+            return Ok("Deleted");
+        }
+        
+        #endregion
 
         
     }
