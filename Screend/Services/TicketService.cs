@@ -15,24 +15,19 @@ namespace Screend.Services
     
     public class TicketService : BaseService, ITicketService
     {
-
-        private readonly ITicketRepository _ticketRepository;
         private readonly IScheduleTicketRepository _scheduleTicketRepository;
         
         public TicketService(
-            ITicketRepository ticketRepository,
             IScheduleTicketRepository scheduleTicketRepository
         )
         {
-            _ticketRepository = ticketRepository;
             _scheduleTicketRepository = scheduleTicketRepository;
-
         }
         
         public ICollection<Ticket> GetTicketsBySchedule(int scheduleId)
         {
-            ScheduleTicket[] scheduleTickets = 
-                _scheduleTicketRepository.Get(st => st.ScheduleId == scheduleId).ToArray();
+            ICollection<ScheduleTicket> scheduleTickets = 
+                _scheduleTicketRepository.GetTicketsByScheduleId(scheduleId);
 
             ICollection<Ticket> tickets = new List<Ticket>();
 

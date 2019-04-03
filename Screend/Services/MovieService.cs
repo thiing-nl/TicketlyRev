@@ -43,6 +43,36 @@ namespace Screend.Services
             return movie;
         }
 
+        public Movie CreateMovie(MovieCreateDTO movieCreateDto)
+        {
+            var movie = Mapper.Map<Movie>(movieCreateDto);
+            _movieRepository.Insert(movie);
+            _movieRepository.Commit();
+            return movie;
+        }
+
+        public MovieReview CreateMovieReview(MovieReviewCreateDTO movieReviewCreateDto, int movieId)
+        {
+            var movie = Get(movieId);
+            var movieReview = new MovieReview
+            {
+                Movie = movie,
+                ReviewerName = movieReviewCreateDto.ReviewerName,
+                Review = movieReviewCreateDto.Review
+            };
+
+            _movieReviewRepository.Insert(movieReview);
+            _movieReviewRepository.Commit();
+
+            return movieReview;
+        }
+
+        public ICollection<MovieReview> GetMovieReviewsByMovieId(int movieId)
+        {
+            var movie = Get(movieId);
+            return _movieReviewRepository.GetReviewsByMovieId(movie.Id);
+        }
+
         public void Delete(int id)
         {
             var movie = Get(id);

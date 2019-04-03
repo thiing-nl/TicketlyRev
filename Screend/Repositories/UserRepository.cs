@@ -6,6 +6,7 @@ namespace Screend.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
+        User GetUserByUsername(string username);
     }
     
     public class UserRepository : BaseRepository<User>, IUserRepository
@@ -15,6 +16,11 @@ namespace Screend.Repositories
         public UserRepository(DatabaseContext context) : base(context)
         {
             _context = context;
+        }
+
+        public User GetUserByUsername(string username)
+        {
+            return FirstOrDefault(x => x.Username == username);
         }
     }
 }

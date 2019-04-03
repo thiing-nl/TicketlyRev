@@ -67,9 +67,9 @@ namespace Screend.Services
                 throw new NotFoundException("Schedule not found");
             }
 
-            var locationMovie = _locationMovieRepository.FirstOrDefault(it =>
-                it.MovieId == schedule.MovieId && it.LocationId == schedule.LocationId);
-                
+            var locationMovie =
+                _locationMovieRepository.GetLocationMovieByLocationIdAndMovieId(schedule.LocationId, schedule.MovieId);
+            
             if (locationMovie == null)
             {
                 throw new NotFoundException("Movie at this location not found");
@@ -87,8 +87,9 @@ namespace Screend.Services
             
             foreach (var orderChair in orderDto.OrderChairs)
             {
-                var bookedChair = _orderChairRepository.Get(it =>
-                    it.TheaterChairId == orderChair.ChairId && it.ScheduleId == schedule.Id).FirstOrDefault();
+                var bookedChair =
+                    _orderChairRepository.GetOrderChairByChairIdAndScheduleId(orderChair.ChairId, schedule.Id);
+                
                 if (bookedChair != null)
                 {
                     throw new BadRequestException("Chair already booked");
@@ -120,6 +121,52 @@ namespace Screend.Services
             _orderRepository.Commit();
             
             return order;
+        }
+
+        public Order UpdateChairs(int orderId, ICollection<OrderUpdateChairDTO> orderUpdateChairDtos)
+        {
+            var order = GetById(orderId);
+
+            foreach (var orderChair in order.OrderChairs)
+            {
+                foreach (var orderUpdateChairDto in orderUpdateChairDtos)
+                {
+                    if (orderUpdateChairDto.ChairdId == orderChair.TheaterChairId)
+                    {
+                        var chair = _theaterChairRepository.GetByID(orderUpdateChairDto.ChairUpdateId);
+
+                        if (
+                            chair == null 
+                            || orderChair.Schedule.TheaterId != chair.TheaterRow.TheaterId
+                        )
+                        {
+                            throw new NotFoundException("Chair not found");
+                        }
+
+                        var bookedChair =
+                            _orderChairRepository.GetOrderChairByChairIdAndScheduleId(orderUpdateChairDto.ChairUpdateId,
+                                orderChair.ScheduleId);
+
+                        if (bookedChair != null)
+                        {
+                            throw new BadRequestException("Chair already booked");
+                        }
+
+                        orderChair.TheaterChairId = chair.Id;
+                        orderChair.TheaterChair = chair;
+                    }
+                }
+            }
+            
+            _orderRepository.Commit();            
+            return order;
+        }
+
+        public void DeleteById(int orderId)
+        {
+            var order = GetById(orderId);
+            _orderRepository.Delete(order);
+            _orderRepository.Commit();
         }
     }
 }
