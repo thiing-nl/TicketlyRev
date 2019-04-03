@@ -4,10 +4,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Screend.Migrations
 {
-    public partial class  Init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Location",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
@@ -16,6 +30,7 @@ namespace Screend.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
+                    Director = table.Column<string>(nullable: true),
                     Runtime = table.Column<int>(nullable: false),
                     Language = table.Column<string>(nullable: true),
                     Age = table.Column<string>(nullable: true),
@@ -26,20 +41,6 @@ namespace Screend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MovieTickets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MovieTickets", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,18 +58,17 @@ namespace Screend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Theaters",
+                name: "Tickets",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Has3D = table.Column<bool>(nullable: false),
-                    WheelchairAccessible = table.Column<bool>(nullable: false)
+                    Price = table.Column<double>(nullable: false),
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Theaters", x => x.Id);
+                    table.PrimaryKey("PK_Tickets", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,6 +89,76 @@ namespace Screend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Theaters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Has3D = table.Column<bool>(nullable: false),
+                    WheelchairAccessible = table.Column<bool>(nullable: false),
+                    LocationId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Theaters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Theaters_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LocationMovie",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    LocationId = table.Column<int>(nullable: false),
+                    MovieId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LocationMovie", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LocationMovie_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LocationMovie_Movies_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Token = table.Column<string>(nullable: true),
+                    ValidFrom = table.Column<DateTime>(nullable: false),
+                    ValidTo = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserToken_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Schedules",
                 columns: table => new
                 {
@@ -96,11 +166,18 @@ namespace Screend.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Time = table.Column<DateTime>(nullable: false),
                     MovieId = table.Column<int>(nullable: false),
-                    TheaterId = table.Column<int>(nullable: false)
+                    TheaterId = table.Column<int>(nullable: false),
+                    LocationId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Schedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Schedules_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Schedules_Movies_MovieId",
                         column: x => x.MovieId,
@@ -143,11 +220,18 @@ namespace Screend.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Paid = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
-                    MollieId = table.Column<string>(nullable: true)
+                    MollieId = table.Column<string>(nullable: true),
+                    LocationMovieId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_LocationMovie_LocationMovieId",
+                        column: x => x.LocationMovieId,
+                        principalTable: "LocationMovie",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Users_UserId",
                         column: x => x.UserId,
@@ -157,23 +241,27 @@ namespace Screend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserToken",
+                name: "ScheduleTicket",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Token = table.Column<string>(nullable: true),
-                    ValidFrom = table.Column<DateTime>(nullable: false),
-                    ValidTo = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    ScheduleId = table.Column<int>(nullable: false),
+                    TicketId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserToken", x => x.Id);
+                    table.PrimaryKey("PK_ScheduleTicket", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserToken_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_ScheduleTicket_Schedules_ScheduleId",
+                        column: x => x.ScheduleId,
+                        principalTable: "Schedules",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ScheduleTicket_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -232,18 +320,12 @@ namespace Screend.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     OrderId = table.Column<int>(nullable: false),
                     TheaterChairId = table.Column<int>(nullable: false),
-                    MovieTicketId = table.Column<int>(nullable: false),
+                    TicketId = table.Column<int>(nullable: false),
                     ScheduleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderChairs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrderChairs_MovieTickets_MovieTicketId",
-                        column: x => x.MovieTicketId,
-                        principalTable: "MovieTickets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OrderChairs_Orders_OrderId",
                         column: x => x.OrderId,
@@ -262,19 +344,91 @@ namespace Screend.Migrations
                         principalTable: "TheaterChairs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderChairs_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Location",
+                columns: new[] { "Id", "Address", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Pieter vreedeplein 174, 5038 BW Tilburg", "Tilburg" },
+                    { 2, "Chasséveld 15, 4811 DH Breda", "Breda" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Movies",
+                columns: new[] { "Id", "Age", "Description", "Director", "Genre", "Img", "Language", "Rating", "Runtime", "Title" },
+                values: new object[,]
+                {
+                    { 1, "PG-13", "Earth's future has been riddled by disasters, famines, and droughts. There is only one way to ensure mankind's survival: Interstellar travel. A newly discovered wormhole in the far reaches of our solar system allows a team of astronauts to go where no man has gone before, a planet that may have the right environment to sustain human life.", "Christopher Nolan", "Adventure,Drama,Sci-Fi", "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg", "EN", "", 169, "Interstellar" },
+                    { 2, "PG-13", "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.", "Christopher Nolan", "Action,Adventure,Sci-Fi,Thriller", "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg", "EN", "", 148, "Inception" },
+                    { 3, "PG-13", "The story of the legendary rock band Queen and lead singer Freddie Mercury, leading up to their famous performance at Live Aid (1985).", "Bryan Singer", "Biography,Drama,Music", "https://m.media-amazon.com/images/M/MV5BNDg2NjIxMDUyNF5BMl5BanBnXkFtZTgwMzEzNTE1NTM@._V1_SX300.jpg", "EN", "", 134, "Bohemian Rhapsody" },
+                    { 4, "R", "Hank Palmer is a successful defense attorney in Chicago, who is getting a divorce. When His brother calls with the news that their mother has died, Hank returns to his childhood home to attend the funeral. Despite the brittle bond between Hank and the Judge, Hank must come to his father's aid and defend him in court. Here, Hank discovers the truth behind the case, which binds together the dysfunctional family and reveals the struggles and secrecy of the family.", "David Dobkin", "Crime,Drama", "https://m.media-amazon.com/images/M/MV5BMTcyNzIxOTIwMV5BMl5BanBnXkFtZTgwMzE0NjQwMjE@._V1_SX300.jpg", "EN", "", 141, "The Judge" },
+                    { 5, "PG-13", "Harry, Ron, and Hermione continue their quest of finding and destroying the Dark Lord's three remaining Horcruxes, the magical items responsible for his immortality. But as the mystical Deathly Hallows are uncovered, and Voldemort finds out about their mission, the biggest battle begins and life as they know it will never be the same again.", "David Yates", "Adventure,Drama,Fantasy,Mystery", "https://m.media-amazon.com/images/M/MV5BMjIyZGU4YzUtNDkzYi00ZDRhLTljYzctYTMxMDQ4M2E0Y2YxXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SX300.jpg", "EN", "", 130, "Harry Potter and the Deathly Hallows: Part 2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tickets",
+                columns: new[] { "Id", "Price", "Title" },
+                values: new object[,]
+                {
+                    { 15, 9.5, "3D 65+" },
+                    { 14, 7.5, "Normaal 65+" },
+                    { 13, 7.0, "Normaal 65+" },
+                    { 12, 10.0, "3D Student" },
+                    { 11, 9.5, "3D Student" },
+                    { 10, 7.5, "Normaal Student" },
+                    { 9, 7.0, "Normaal Student" },
+                    { 5, 7.0, "Normaal Kind" },
+                    { 7, 9.5, "3D Kind" },
+                    { 6, 7.5, "Normaal Kind" },
+                    { 16, 10.0, "3D 65+" },
+                    { 4, 11.5, "3D Film" },
+                    { 3, 11.0, "3D Film" },
+                    { 2, 9.0, "Normaal" },
+                    { 1, 8.5, "Normaal" },
+                    { 8, 10.0, "3D Kind" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "AccountType", "FirstName", "LastName", "Password", "Username" },
+                values: new object[] { 1, 0, "order", "order", "order", "order" });
+
+            migrationBuilder.InsertData(
+                table: "LocationMovie",
+                columns: new[] { "Id", "LocationId", "MovieId" },
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 2, 1 },
+                    { 3, 1, 2 },
+                    { 4, 2, 2 },
+                    { 5, 1, 3 },
+                    { 6, 2, 3 },
+                    { 7, 1, 4 },
+                    { 8, 2, 4 },
+                    { 9, 1, 5 },
+                    { 10, 2, 5 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Theaters",
-                columns: new[] { "Id", "Has3D", "Name", "WheelchairAccessible" },
+                columns: new[] { "Id", "Has3D", "LocationId", "Name", "WheelchairAccessible" },
                 values: new object[,]
                 {
-                    { 1, true, "Zaal 1", true },
-                    { 2, true, "Zaal 2", true },
-                    { 3, false, "Zaal 3", true },
-                    { 4, false, "Zaal 4", true },
-                    { 5, false, "Zaal 5", false },
-                    { 6, false, "Zaal 6", false }
+                    { 1, true, 1, "Zaal 1", true },
+                    { 2, true, 1, "Zaal 2", true },
+                    { 3, false, 1, "Zaal 3", true },
+                    { 4, false, 1, "Zaal 4", true },
+                    { 5, false, 1, "Zaal 5", false },
+                    { 6, false, 1, "Zaal 6", false }
                 });
 
             migrationBuilder.InsertData(
@@ -850,6 +1004,16 @@ namespace Screend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_LocationMovie_LocationId",
+                table: "LocationMovie",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LocationMovie_MovieId",
+                table: "LocationMovie",
+                column: "MovieId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderArticles_ArticleId",
                 table: "OrderArticles",
                 column: "ArticleId");
@@ -858,11 +1022,6 @@ namespace Screend.Migrations
                 name: "IX_OrderArticles_OrderId",
                 table: "OrderArticles",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderChairs_MovieTicketId",
-                table: "OrderChairs",
-                column: "MovieTicketId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderChairs_OrderId",
@@ -880,9 +1039,24 @@ namespace Screend.Migrations
                 column: "TheaterChairId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderChairs_TicketId",
+                table: "OrderChairs",
+                column: "TicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_LocationMovieId",
+                table: "Orders",
+                column: "LocationMovieId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schedules_LocationId",
+                table: "Schedules",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedules_MovieId",
@@ -895,6 +1069,16 @@ namespace Screend.Migrations
                 column: "TheaterId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ScheduleTicket_ScheduleId",
+                table: "ScheduleTicket",
+                column: "ScheduleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduleTicket_TicketId",
+                table: "ScheduleTicket",
+                column: "TicketId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TheaterChairs_TheaterRowId",
                 table: "TheaterChairs",
                 column: "TheaterRowId");
@@ -903,6 +1087,11 @@ namespace Screend.Migrations
                 name: "IX_TheaterRows_TheaterId",
                 table: "TheaterRows",
                 column: "TheaterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Theaters_LocationId",
+                table: "Theaters",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserToken_UserId",
@@ -919,34 +1108,43 @@ namespace Screend.Migrations
                 name: "OrderChairs");
 
             migrationBuilder.DropTable(
+                name: "ScheduleTicket");
+
+            migrationBuilder.DropTable(
                 name: "UserToken");
 
             migrationBuilder.DropTable(
                 name: "TheaterArticles");
 
             migrationBuilder.DropTable(
-                name: "MovieTickets");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "TheaterChairs");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Schedules");
 
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "Tickets");
+
+            migrationBuilder.DropTable(
+                name: "LocationMovie");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "TheaterRows");
 
             migrationBuilder.DropTable(
+                name: "Movies");
+
+            migrationBuilder.DropTable(
                 name: "Theaters");
+
+            migrationBuilder.DropTable(
+                name: "Location");
         }
     }
 }

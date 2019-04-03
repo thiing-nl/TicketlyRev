@@ -9,8 +9,8 @@ using Screend.Data;
 namespace Screend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190314023350_MovieTicketSeeder")]
-    partial class MovieTicketSeeder
+    [Migration("20190403214518_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,56 @@ namespace Screend.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Screend.Entities.Location.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location");
+
+                    b.HasData(
+                        new { Id = 1, Address = "Pieter vreedeplein 174, 5038 BW Tilburg", Name = "Tilburg" },
+                        new { Id = 2, Address = "Chasséveld 15, 4811 DH Breda", Name = "Breda" }
+                    );
+                });
+
+            modelBuilder.Entity("Screend.Entities.Location.LocationMovie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("LocationId");
+
+                    b.Property<int>("MovieId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("LocationMovie");
+
+                    b.HasData(
+                        new { Id = 1, LocationId = 1, MovieId = 1 },
+                        new { Id = 2, LocationId = 2, MovieId = 1 },
+                        new { Id = 3, LocationId = 1, MovieId = 2 },
+                        new { Id = 4, LocationId = 2, MovieId = 2 },
+                        new { Id = 5, LocationId = 1, MovieId = 3 },
+                        new { Id = 6, LocationId = 2, MovieId = 3 },
+                        new { Id = 7, LocationId = 1, MovieId = 4 },
+                        new { Id = 8, LocationId = 2, MovieId = 4 },
+                        new { Id = 9, LocationId = 1, MovieId = 5 },
+                        new { Id = 10, LocationId = 2, MovieId = 5 }
+                    );
+                });
 
             modelBuilder.Entity("Screend.Entities.Movie.Movie", b =>
                 {
@@ -55,31 +105,12 @@ namespace Screend.Migrations
                     );
                 });
 
-            modelBuilder.Entity("Screend.Entities.Movie.MovieTicket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.Property<double>("Price");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MovieTickets");
-
-                    b.HasData(
-                        new { Id = 1, Name = "Normaal < 120min", Price = 8.5 },
-                        new { Id = 2, Name = "Normaal > 120min", Price = 9.0 },
-                        new { Id = 3, Name = "3D Film < 120min", Price = 11.0 },
-                        new { Id = 4, Name = "3D Film > 120min", Price = 11.5 }
-                    );
-                });
-
             modelBuilder.Entity("Screend.Entities.Order.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("LocationMovieId");
 
                     b.Property<string>("MollieId");
 
@@ -88,6 +119,8 @@ namespace Screend.Migrations
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationMovieId");
 
                     b.HasIndex("UserId");
 
@@ -117,23 +150,23 @@ namespace Screend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("MovieTicketId");
-
                     b.Property<int>("OrderId");
 
                     b.Property<int>("ScheduleId");
 
                     b.Property<int>("TheaterChairId");
 
-                    b.HasKey("Id");
+                    b.Property<int>("TicketId");
 
-                    b.HasIndex("MovieTicketId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ScheduleId");
 
                     b.HasIndex("TheaterChairId");
+
+                    b.HasIndex("TicketId");
 
                     b.ToTable("OrderChairs");
                 });
@@ -143,6 +176,8 @@ namespace Screend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("LocationId");
+
                     b.Property<int>("MovieId");
 
                     b.Property<int>("TheaterId");
@@ -151,11 +186,31 @@ namespace Screend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.HasIndex("MovieId");
 
                     b.HasIndex("TheaterId");
 
                     b.ToTable("Schedules");
+                });
+
+            modelBuilder.Entity("Screend.Entities.Schedule.ScheduleTicket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ScheduleId");
+
+                    b.Property<int>("TicketId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("ScheduleTicket");
                 });
 
             modelBuilder.Entity("Screend.Entities.Theater.Theater", b =>
@@ -165,21 +220,25 @@ namespace Screend.Migrations
 
                     b.Property<bool>("Has3D");
 
+                    b.Property<int>("LocationId");
+
                     b.Property<string>("Name");
 
                     b.Property<bool>("WheelchairAccessible");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LocationId");
+
                     b.ToTable("Theaters");
 
                     b.HasData(
-                        new { Id = 1, Has3D = true, Name = "Zaal 1", WheelchairAccessible = true },
-                        new { Id = 2, Has3D = true, Name = "Zaal 2", WheelchairAccessible = true },
-                        new { Id = 3, Has3D = false, Name = "Zaal 3", WheelchairAccessible = true },
-                        new { Id = 4, Has3D = false, Name = "Zaal 4", WheelchairAccessible = true },
-                        new { Id = 5, Has3D = false, Name = "Zaal 5", WheelchairAccessible = false },
-                        new { Id = 6, Has3D = false, Name = "Zaal 6", WheelchairAccessible = false }
+                        new { Id = 1, Has3D = true, LocationId = 1, Name = "Zaal 1", WheelchairAccessible = true },
+                        new { Id = 2, Has3D = true, LocationId = 1, Name = "Zaal 2", WheelchairAccessible = true },
+                        new { Id = 3, Has3D = false, LocationId = 1, Name = "Zaal 3", WheelchairAccessible = true },
+                        new { Id = 4, Has3D = false, LocationId = 1, Name = "Zaal 4", WheelchairAccessible = true },
+                        new { Id = 5, Has3D = false, LocationId = 1, Name = "Zaal 5", WheelchairAccessible = false },
+                        new { Id = 6, Has3D = false, LocationId = 1, Name = "Zaal 6", WheelchairAccessible = false }
                     );
                 });
 
@@ -795,6 +854,39 @@ namespace Screend.Migrations
                     );
                 });
 
+            modelBuilder.Entity("Screend.Entities.Ticket.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("Price");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tickets");
+
+                    b.HasData(
+                        new { Id = 1, Price = 8.5, Title = "Normaal" },
+                        new { Id = 2, Price = 9.0, Title = "Normaal" },
+                        new { Id = 3, Price = 11.0, Title = "3D Film" },
+                        new { Id = 4, Price = 11.5, Title = "3D Film" },
+                        new { Id = 5, Price = 7.0, Title = "Normaal Kind" },
+                        new { Id = 6, Price = 7.5, Title = "Normaal Kind" },
+                        new { Id = 7, Price = 9.5, Title = "3D Kind" },
+                        new { Id = 8, Price = 10.0, Title = "3D Kind" },
+                        new { Id = 9, Price = 7.0, Title = "Normaal Student" },
+                        new { Id = 10, Price = 7.5, Title = "Normaal Student" },
+                        new { Id = 11, Price = 9.5, Title = "3D Student" },
+                        new { Id = 12, Price = 10.0, Title = "3D Student" },
+                        new { Id = 13, Price = 7.0, Title = "Normaal 65+" },
+                        new { Id = 14, Price = 7.5, Title = "Normaal 65+" },
+                        new { Id = 15, Price = 9.5, Title = "3D 65+" },
+                        new { Id = 16, Price = 10.0, Title = "3D 65+" }
+                    );
+                });
+
             modelBuilder.Entity("Screend.Entities.User.User", b =>
                 {
                     b.Property<int>("Id")
@@ -813,6 +905,10 @@ namespace Screend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new { Id = 1, AccountType = 0, FirstName = "order", LastName = "order", Password = "order", Username = "order" }
+                    );
                 });
 
             modelBuilder.Entity("Screend.Entities.User.UserToken", b =>
@@ -835,8 +931,26 @@ namespace Screend.Migrations
                     b.ToTable("UserToken");
                 });
 
+            modelBuilder.Entity("Screend.Entities.Location.LocationMovie", b =>
+                {
+                    b.HasOne("Screend.Entities.Location.Location", "Location")
+                        .WithMany("Movies")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Screend.Entities.Movie.Movie", "Movie")
+                        .WithMany()
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Screend.Entities.Order.Order", b =>
                 {
+                    b.HasOne("Screend.Entities.Location.LocationMovie", "LocationMovie")
+                        .WithMany("Orders")
+                        .HasForeignKey("LocationMovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Screend.Entities.User.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
@@ -858,11 +972,6 @@ namespace Screend.Migrations
 
             modelBuilder.Entity("Screend.Entities.Order.OrderChair", b =>
                 {
-                    b.HasOne("Screend.Entities.Movie.MovieTicket", "MovieTicket")
-                        .WithMany()
-                        .HasForeignKey("MovieTicketId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Screend.Entities.Order.Order", "Order")
                         .WithMany("OrderChairs")
                         .HasForeignKey("OrderId")
@@ -877,10 +986,20 @@ namespace Screend.Migrations
                         .WithMany()
                         .HasForeignKey("TheaterChairId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Screend.Entities.Ticket.Ticket", "Ticket")
+                        .WithMany()
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Screend.Entities.Schedule.Schedule", b =>
                 {
+                    b.HasOne("Screend.Entities.Location.Location", "Location")
+                        .WithMany("Schedules")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Screend.Entities.Movie.Movie", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId")
@@ -889,6 +1008,27 @@ namespace Screend.Migrations
                     b.HasOne("Screend.Entities.Theater.Theater", "Theater")
                         .WithMany("Schedules")
                         .HasForeignKey("TheaterId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Screend.Entities.Schedule.ScheduleTicket", b =>
+                {
+                    b.HasOne("Screend.Entities.Schedule.Schedule", "Schedule")
+                        .WithMany("ScheduleTickets")
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Screend.Entities.Ticket.Ticket", "Ticket")
+                        .WithMany("ScheduleTickets")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Screend.Entities.Theater.Theater", b =>
+                {
+                    b.HasOne("Screend.Entities.Location.Location", "Location")
+                        .WithMany("Theaters")
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
