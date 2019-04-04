@@ -36,6 +36,16 @@ namespace Screend.Controllers
             return Ok(MapSchedule(schedule));
         }
         
+        [HttpGet("all")]
+        [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetAll()
+        {
+            var schedules = _scheduleService.GetAll().Select(MapSchedule);
+            return Ok(schedules.ToArray());
+        }
+        
+        
         [HttpGet("day")]
         [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
