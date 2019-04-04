@@ -30,6 +30,14 @@ namespace Screend.Controllers
 
         #region GetRoutes
 
+        [HttpGet]
+        [ProducesResponseType(typeof(ICollection<OrderDTO>), StatusCodes.Status200OK)]
+        public IActionResult GetAllOrders()
+        {
+            ICollection<Order> orders = _orderService.GetAllOrders();
+            return Ok(Mapper.Map<ICollection<OrderDTO>>(orders));
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPaymentStatus(int id)

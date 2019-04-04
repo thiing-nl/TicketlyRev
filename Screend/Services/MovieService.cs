@@ -24,16 +24,19 @@ namespace Screend.Services
         private readonly IMovieRepository _movieRepository;
         private readonly ILocationRepository _locationRepository;
         private readonly IMovieReviewRepository _movieReviewRepository;
+        private readonly ILocationMovieRepository _locationMovieRepository;
 
         public MovieService(
             IMovieRepository movieRepository, 
             ILocationRepository locationRepository,
-            IMovieReviewRepository movieReviewRepository
+            IMovieReviewRepository movieReviewRepository,
+            ILocationMovieRepository locationMovieRepository
             )
         {
             _movieRepository = movieRepository;
             _locationRepository = locationRepository;
             _movieReviewRepository = movieReviewRepository;
+            _locationMovieRepository = locationMovieRepository;
         }
 
         public ICollection<Movie> GetAllMoviesByLocation(int locationId)
@@ -59,6 +62,22 @@ namespace Screend.Services
             var movie = Mapper.Map<Movie>(movieCreateDto);
             _movieRepository.Insert(movie);
             _movieRepository.Commit();
+
+            var locationMovie = new LocationMovie
+            {
+                Movie = movie,
+                LocationId = 1
+            };
+            
+            var locationMovie2 = new LocationMovie
+            {
+                Movie = movie,
+                LocationId = 2
+            };
+            
+            _locationMovieRepository.Insert(locationMovie);
+            _locationMovieRepository.Insert(locationMovie2);
+            _locationMovieRepository.Commit();
             return movie;
         }
 

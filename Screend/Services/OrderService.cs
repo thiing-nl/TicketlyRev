@@ -11,6 +11,7 @@ namespace Screend.Services
 {
     public interface IOrderService
     {
+        ICollection<Order> GetAllOrders();
         Order Create(OrderCreateDTO orderDto, string mollieId);
 
         Order GetById(int id);
@@ -46,6 +47,11 @@ namespace Screend.Services
             _orderChairRepository = orderChairRepository;
             _theaterChairRepository = theaterChairRepository;
             _locationMovieRepository = locationMovieRepository;
+        }
+
+        public ICollection<Order> GetAllOrders()
+        {
+            return _orderRepository.GetAll().ToArray();
         }
 
         public void Update(Order update)
