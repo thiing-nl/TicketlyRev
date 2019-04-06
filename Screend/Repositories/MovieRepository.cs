@@ -16,5 +16,5 @@ namespace Screend.Repositories
         {
             _context = context;
         }
-    }
+    }    
 }
