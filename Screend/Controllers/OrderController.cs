@@ -110,19 +110,6 @@ namespace Screend.Controllers
         }
 
         #endregion
-        
-        #region DeleteRoutes
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult DeleteById(int id)
-        {
-            _orderService.DeleteById(id);
-            return Ok("Deleted");
-        }
-        
-        #endregion
 
         
     }
