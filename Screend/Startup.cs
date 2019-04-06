@@ -58,6 +58,7 @@ namespace Screend
 
             // Repositories
             services.AddTransient<IMovieRepository, MovieRepository>();
+            services.AddTransient<IMovieReviewRepository, MovieReviewRepository>();
             services.AddTransient<ITicketRepository, TicketRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IScheduleRepository, ScheduleRepository>();
@@ -121,6 +122,7 @@ namespace Screend
                 cfg.AddProfiles(typeof(UserProfile).Assembly);
                 cfg.AddProfiles(typeof(ScheduleProfile).Assembly);
                 cfg.AddProfiles(typeof(MovieProfile).Assembly);
+                cfg.AddProfiles(typeof(OrderProfile).Assembly);
             });
             services.AddAutoMapper();
             

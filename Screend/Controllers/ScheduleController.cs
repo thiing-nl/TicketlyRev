@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,16 @@ namespace Screend.Controllers
             return Ok(MapSchedule(schedule));
         }
         
+        [HttpGet("all")]
+        [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult GetAll()
+        {
+            var schedules = _scheduleService.GetAll().Select(MapSchedule);
+            return Ok(schedules.ToArray());
+        }
+        
+        
         [HttpGet("day")]
         [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,7 +64,7 @@ namespace Screend.Controllers
                         Int32.Parse(input[1]),
                         Int32.Parse(input[2]));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw new BadRequestException("Datetime not right formatted");
                 }
@@ -82,6 +93,21 @@ namespace Screend.Controllers
 
         #endregion
 
+        #region PostRoutes
+
+        [HttpPost]
+        [ProducesResponseType(typeof(ScheduleDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult CreateSchedule([FromBody] ScheduleCreateDTO scheduleCreateDto)
+        {
+            var location = (Location) HttpContext.Items["Location"];
+            var schedule = _scheduleService.CreateSchedule(scheduleCreateDto, location);
+            return Ok(MapSchedule(schedule));
+        }
+
+        #endregion    
+        
         #region Private Methods
 
         /// <summary>

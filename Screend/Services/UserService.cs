@@ -73,8 +73,10 @@ namespace Screend.Services
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
 
-        public UserService(IUserRepository userRepository,
-            IConfiguration configuration)
+        public UserService(
+            IUserRepository userRepository,
+            IConfiguration configuration
+            )
         {
             _userRepository = userRepository;
             _configuration = configuration;
@@ -97,7 +99,7 @@ namespace Screend.Services
         public User Authenticate(string username, string password)
         {
             var user = _userRepository
-                .FirstOrDefault(x => x.Username == username);
+                .GetUserByUsername(username);
 
             // Check if user exists
             if (user == null)
@@ -125,7 +127,7 @@ namespace Screend.Services
         public User Register(UserRegisterDTO userRegisterDTO)
         {
             var user = _userRepository
-                .FirstOrDefault(x => x.Username == userRegisterDTO.Username);
+                .GetUserByUsername(userRegisterDTO.Username);
 
             // User doesn't exist
             if (user != null)
@@ -148,7 +150,7 @@ namespace Screend.Services
         public User Create(UserCreateDTO userCreateDTO)
         {
             var user = _userRepository
-                .FirstOrDefault(x => x.Username == userCreateDTO.Username);
+                .GetUserByUsername(userCreateDTO.Username);
 
             // User doesn't exist
             if (user != null)

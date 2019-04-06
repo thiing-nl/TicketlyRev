@@ -1,11 +1,7 @@
-using System.Collections.Generic;
-
-namespace Screend.Entities.Movie
+namespace Screend.Models.Movie
 {
-    public class Movie
+    public class MovieCreateDTO
     {
-        public int Id { get; set; }
-        
         public string Title { get; set; }
         
         public string Description { get; set; }
@@ -23,8 +19,5 @@ namespace Screend.Entities.Movie
         public string Rating { get; set; }
         
         public string Img { get; set; }
-        
-        public virtual ICollection<MovieReview> MovieReviews { get; set; }
-        
     }
 }
