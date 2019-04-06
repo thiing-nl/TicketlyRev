@@ -14,10 +14,10 @@ namespace Screend.Tests.Services
         
         static MovieServiceTest()
         {
-            setup();
+            Setup();
         }
 
-        private static void setup()
+        private static void Setup()
         {
             var movieRepository = new Mock<IMovieRepository>();
             var locationRepository = new Mock<ILocationRepository>();

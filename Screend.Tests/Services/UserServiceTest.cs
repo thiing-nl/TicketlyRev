@@ -19,10 +19,10 @@ namespace Screend.Tests.Services
         
         static UserServiceTest()
         {
-            setupUserService();
+            Setup();
         }
 
-        private static void setupUserService()
+        private static void Setup()
         {
             var userRepository = new Mock<IUserRepository>();
             var configuration = new Mock<IConfiguration>();
