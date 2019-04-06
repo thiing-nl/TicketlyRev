@@ -41,7 +41,6 @@ namespace Screend.Tests.Services
             );
         }
         
-        
         [Fact]
         public void GetMovieReviewsByMovieIdTest()
         {
