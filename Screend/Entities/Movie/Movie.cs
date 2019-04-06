@@ -24,7 +24,5 @@ namespace Screend.Entities.Movie
         
         public string Img { get; set; }
         
-        public virtual ICollection<MovieReview> MovieReviews { get; set; }
-        
     }
 }

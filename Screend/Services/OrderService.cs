@@ -17,10 +17,6 @@ namespace Screend.Services
         Order GetById(int id);
 
         void Update(Order order);
-
-        Order UpdateChairs(int orderId, ICollection<OrderUpdateChairDTO> orderUpdateChairDtos);
-
-        void DeleteById(int orderId);
     }
     
     public class OrderService : BaseService, IOrderService
@@ -134,51 +130,6 @@ namespace Screend.Services
             
             return order;
         }
-
-        public Order UpdateChairs(int orderId, ICollection<OrderUpdateChairDTO> orderUpdateChairDtos)
-        {
-            var order = GetById(orderId);
-
-            foreach (var orderChair in order.OrderChairs)
-            {
-                foreach (var orderUpdateChairDto in orderUpdateChairDtos)
-                {
-                    if (orderUpdateChairDto.ChairdId == orderChair.TheaterChairId)
-                    {
-                        var chair = _theaterChairRepository.GetByID(orderUpdateChairDto.ChairUpdateId);
-
-                        if (
-                            chair == null 
-                            || orderChair.Schedule.TheaterId != chair.TheaterRow.TheaterId
-                        )
-                        {
-                            throw new NotFoundException("Chair not found");
-                        }
-
-                        var bookedChair =
-                            _orderChairRepository.GetOrderChairByChairIdAndScheduleId(orderUpdateChairDto.ChairUpdateId,
-                                orderChair.ScheduleId);
-
-                        if (bookedChair != null)
-                        {
-                            throw new BadRequestException("Chair already booked");
-                        }
-
-                        orderChair.TheaterChairId = chair.Id;
-                        orderChair.TheaterChair = chair;
-                    }
-                }
-            }
-            
-            _orderRepository.Commit();            
-            return order;
-        }
-
-        public void DeleteById(int orderId)
-        {
-            var order = GetById(orderId);
-            _orderRepository.Delete(order);
-            _orderRepository.Commit();
-        }
+        
     }
 }

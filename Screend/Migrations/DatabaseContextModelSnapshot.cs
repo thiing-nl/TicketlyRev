@@ -103,24 +103,6 @@ namespace Screend.Migrations
                     );
                 });
 
-            modelBuilder.Entity("Screend.Entities.Movie.MovieReview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("MovieId");
-
-                    b.Property<string>("Review");
-
-                    b.Property<string>("ReviewerName");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("MovieReviews");
-                });
-
             modelBuilder.Entity("Screend.Entities.Order.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -956,14 +938,6 @@ namespace Screend.Migrations
 
                     b.HasOne("Screend.Entities.Movie.Movie", "Movie")
                         .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Screend.Entities.Movie.MovieReview", b =>
-                {
-                    b.HasOne("Screend.Entities.Movie.Movie", "Movie")
-                        .WithMany("MovieReviews")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

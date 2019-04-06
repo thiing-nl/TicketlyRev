@@ -30,14 +30,6 @@ namespace Screend.Controllers
 
         #region GetRoutes
 
-        [HttpGet]
-        [ProducesResponseType(typeof(ICollection<OrderDTO>), StatusCodes.Status200OK)]
-        public IActionResult GetAllOrders()
-        {
-            ICollection<Order> orders = _orderService.GetAllOrders();
-            return Ok(Mapper.Map<ICollection<OrderDTO>>(orders));
-        }
-
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPaymentStatus(int id)
@@ -76,7 +68,7 @@ namespace Screend.Controllers
         #region PostRoutes
 
         [HttpPost("create")]
-        [ProducesResponseType(typeof(OrderPaymentDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(OrderDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Create([FromBody] OrderCreateDTO orderCreateDto)
@@ -110,29 +102,13 @@ namespace Screend.Controllers
                 var id = decodedObject.id;
                 
                 var order = _orderService.Create(orderCreateDto, id.ToString());
-                var mappedOrder = new OrderPaymentDTO();
+                var mappedOrder = new OrderDTO();
                 mappedOrder.Id = order.Id;
                 mappedOrder.PaymentLink = link;
                 return Ok(mappedOrder);
             }            
         }
 
-        #endregion
-        
-        #region UpdateRoutes
-
-        [HttpPut("{id}/chairs")]
-        [ProducesResponseType(typeof(OrderDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult ChangeSeatsForOrder(
-            int id, [FromBody] ICollection<OrderUpdateChairDTO> orderChairUpdateDtos
-        )
-        {
-            var order = _orderService.UpdateChairs(id, orderChairUpdateDtos);
-            return Ok(Mapper.Map<OrderDTO>(order));
-        }
-        
         #endregion
         
         #region DeleteRoutes

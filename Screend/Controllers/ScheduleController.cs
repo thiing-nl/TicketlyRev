@@ -36,15 +36,6 @@ namespace Screend.Controllers
             return Ok(MapSchedule(schedule));
         }
         
-        [HttpGet("all")]
-        [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult GetAll()
-        {
-            var schedules = _scheduleService.GetAll().Select(MapSchedule);
-            return Ok(schedules.ToArray());
-        }
-        
         
         [HttpGet("day")]
         [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
@@ -91,22 +82,7 @@ namespace Screend.Controllers
             return Ok(schedules.ToArray());
         }
 
-        #endregion
-
-        #region PostRoutes
-
-        [HttpPost]
-        [ProducesResponseType(typeof(ScheduleDTO), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult CreateSchedule([FromBody] ScheduleCreateDTO scheduleCreateDto)
-        {
-            var location = (Location) HttpContext.Items["Location"];
-            var schedule = _scheduleService.CreateSchedule(scheduleCreateDto, location);
-            return Ok(MapSchedule(schedule));
-        }
-
-        #endregion    
+        #endregion 
         
         #region Private Methods
 

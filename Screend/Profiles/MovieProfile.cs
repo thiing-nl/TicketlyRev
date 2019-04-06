@@ -9,7 +9,6 @@ namespace Screend.Profiles
     {
         public MovieProfile()
         {
-            CreateMap<Movie, MovieCreateDTO>().ReverseMap();
             CreateMap<Schedule, MovieScheduleDTO>().ReverseMap();
         }
     }

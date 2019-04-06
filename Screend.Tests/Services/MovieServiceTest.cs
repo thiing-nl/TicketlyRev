@@ -21,8 +21,6 @@ namespace Screend.Tests.Services
         {
             var movieRepository = new Mock<IMovieRepository>();
             var locationRepository = new Mock<ILocationRepository>();
-            var movieReviewRepository = new Mock<IMovieReviewRepository>();
-            var locationMovieRepository = new Mock<ILocationMovieRepository>();
 
             var mockMovie = new Movie
             {
@@ -31,21 +29,12 @@ namespace Screend.Tests.Services
             };
             
             movieRepository.Setup(x => x.GetByID(movieId)).Returns(mockMovie);
-            movieReviewRepository.Setup(x => x.GetReviewsByMovieId(movieId)).Returns(new List<MovieReview>());
             
             _movieService = new MovieService(
                 movieRepository.Object, 
-                locationRepository.Object,
-                movieReviewRepository.Object,
-                locationMovieRepository.Object
+                locationRepository.Object
             );
         }
         
-        [Fact]
-        public void GetMovieReviewsByMovieIdTest()
-        {
-            var reviews = _movieService.GetMovieReviewsByMovieId(movieId);
-            Assert.IsType<List<MovieReview>>(reviews);
-        }
     }
 }

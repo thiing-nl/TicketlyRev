@@ -23,8 +23,6 @@ namespace Screend.Data
         // Movie
         public DbSet<Movie> Movies { get; set; }
         
-        public DbSet<MovieReview> MovieReviews { get; set; }
-        
         // Ticket
         public DbSet<Ticket> Tickets { get; set; }
         
