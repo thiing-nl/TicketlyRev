@@ -9,6 +9,10 @@ namespace Screend.Models.Schedule
         public int Id { get; set; }
         
         public DateTime Time { get; set; }
+
+        public int AmountFree { get; set; } = 0;
+        
+        public double Turnover { get; set; } = 0;
         
         public TheaterDTO Theater { get; set; }      
         

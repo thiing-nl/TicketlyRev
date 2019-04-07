@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Primitives;
 using Screend.Entities.Location;
 using Screend.Exceptions;
 using Screend.Repositories;

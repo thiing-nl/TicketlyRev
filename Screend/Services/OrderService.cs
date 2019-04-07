@@ -80,6 +80,7 @@ namespace Screend.Services
                 UserId = 1,
                 Paid = 0,
                 MollieId = mollieId,
+                Amount = orderDto.Amount,
                 LocationMovie = locationMovie
             };
             

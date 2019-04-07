@@ -30,6 +30,7 @@
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="4.0.1">
     </PackageReference>
+    <PackageReference Include="Twilio" Version="5.28.0" />
   </ItemGroup>
 
   <ItemGroup>

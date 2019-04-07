@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Screend.Data;
 
 namespace Screend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190404010123_OrderAddAmount")]
+    partial class OrderAddAmount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,28 +67,6 @@ namespace Screend.Migrations
                         new { Id = 9, LocationId = 1, MovieId = 5 },
                         new { Id = 10, LocationId = 2, MovieId = 5 }
                     );
-                });
-
-            modelBuilder.Entity("Screend.Entities.LostItem.LostItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Email");
-
-                    b.Property<int>("LocationId");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<int>("State");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("LostItems");
                 });
 
             modelBuilder.Entity("Screend.Entities.Movie.Movie", b =>
@@ -963,14 +943,6 @@ namespace Screend.Migrations
                     b.HasOne("Screend.Entities.Movie.Movie", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Screend.Entities.LostItem.LostItem", b =>
-                {
-                    b.HasOne("Screend.Entities.Location.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

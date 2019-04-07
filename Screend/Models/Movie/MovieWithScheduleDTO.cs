@@ -10,6 +10,8 @@ namespace Screend.Models.Movie
     {
         public MovieDTO Movie { get; set; }
         
+        public double Turnover { get; set; }
+        
         public ICollection<MovieScheduleDTO> Schedule { get; set; }
     }
 }
