@@ -44,8 +44,6 @@ namespace Screend.Data
 
         public DbSet<TheaterChair> TheaterChairs { get; set; }
         
-        public DbSet<TheaterRow> TheaterRows { get; set; }
-        
         // Lost Items
         public DbSet<LostItem> LostItems { get; set; }
         

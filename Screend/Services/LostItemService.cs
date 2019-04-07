@@ -31,8 +31,11 @@ namespace Screend.Services
         {
             _lostItemRepository = lostItemRepository;
             _configuration = configuration;
-            
-            TwilioClient.Init(_configuration["twilioAccountSid"], _configuration["twilioAuthToken"]);
+
+            if (_configuration["twilioAccountSid"] != null && _configuration["twilioAuthToken"] != null)
+            {
+                TwilioClient.Init(_configuration["twilioAccountSid"], _configuration["twilioAuthToken"]);
+            }
         }
         
         public IEnumerable<LostItem> GetAll(int locationId)

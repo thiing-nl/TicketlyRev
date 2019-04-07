@@ -76,7 +76,7 @@ namespace Screend.Services
             }
 
             var locationMovie =
-                _locationMovieRepository.GetLocationMovieByLocationIdAndMovieId(schedule.LocationId, schedule.MovieId);
+                _locationMovieRepository.GetByMovieIdAndLocationId(schedule.MovieId, schedule.LocationId);
             
             if (locationMovie == null)
             {
