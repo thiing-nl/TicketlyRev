@@ -71,6 +71,7 @@ namespace Screend.Services
     public class UserService : BaseService, IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
 
         public UserService(
             IUserRepository userRepository,
@@ -78,6 +79,7 @@ namespace Screend.Services
             )
         {
             _userRepository = userRepository;
+            _configuration = configuration;
         }
 
         /// <inheritdoc cref="IUserService.Get" />
@@ -179,7 +181,7 @@ namespace Screend.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             
             // Get the secret
-            var key = Encoding.ASCII.GetBytes("ALSKJFDOIWUEQM<XC this is a secret for the ticketly project ALSKFJLQKWJE");
+            var key = Encoding.ASCII.GetBytes(_configuration["secret"]);
             
             // Create the params for the token
             var tokenDescriptor = new SecurityTokenDescriptor
