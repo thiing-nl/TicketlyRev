@@ -17,8 +17,10 @@ namespace Screend.Tests.Services
     public class UserServiceTest
     {
         private static UserService _userService;
-        private static int UserId = 1;
+        private static int userId = 1;
+        private static int userId2 = 2;
         private static string username = "manager";
+        private static string username2 = "manager2";
         private static string password = "manager";
         private static string encryptedPassword;
         
@@ -36,7 +38,7 @@ namespace Screend.Tests.Services
 
             var user = new User
             {
-                Id = UserId,
+                Id = userId,
                 Username = username,
                 FirstName = "manager",
                 LastName = "manager",
@@ -46,15 +48,28 @@ namespace Screend.Tests.Services
                 AccountType = AccountType.Screen
             };
             
+            var user2 = new User
+            {
+                Id = userId2,
+                Username = username2,
+                FirstName = "manager",
+                LastName = "manager",
+                Password = encryptedPassword,
+                Tokens = new List<UserToken>(),
+                Orders = new List<Order>(),
+                AccountType = AccountType.Manager
+            };
+            
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<UserProfile>();
             });
             
-            userRepository.Setup(u => u.GetByID(UserId)).Returns(user);
+            userRepository.Setup(u => u.GetByID(userId)).Returns(user);
             userRepository.Setup(ur => ur.GetUserByUsername("manager"))
                 .Returns(user);
             userRepository.Setup(u => u.GetUserByUsername(username)).Returns(null as User);
+            userRepository.Setup(u => u.GetUserByUsername(username2)).Returns(user2);
 
             configuration.Setup(x => x["secret"]).Returns("ticketly-test-secret");
 
@@ -65,7 +80,7 @@ namespace Screend.Tests.Services
         [Fact]
         public void AuthenticateUserTest()
         {
-            var user = _userService.Authenticate(username, password);
+            var user = _userService.Authenticate(username2, password);
             Assert.IsType<User>(user);
         }
 
@@ -78,7 +93,7 @@ namespace Screend.Tests.Services
         [Fact]
         public void GetByIdTest()
         {
-            var user = _userService.Get(UserId);
+            var user = _userService.Get(userId);
             Assert.IsType<User>(user);
         }
 
