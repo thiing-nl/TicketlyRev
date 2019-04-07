@@ -132,16 +132,16 @@ namespace Screend.Tests.Services
             Assert.IsType<LostItem>(lostItem);
             Assert.Equal(lostItem.LocationId, 1);
             
-            _lostItemRepository.Verify(m => m.Insert(It.IsAny<LostItem>()), Times.AtLeast(1));
-            _lostItemRepository.Verify(m => m.Commit(), Times.Once());
+            _lostItemRepository.Verify(m => m.Insert(It.IsAny<LostItem>()), Times.AtLeastOnce());
+            _lostItemRepository.Verify(m => m.Commit(), Times.AtLeastOnce());
         }
         
         [Fact]
         private void DeleteLocation()
         {
             _lostItemService.Delete(1);
-            _lostItemRepository.Verify(m => m.Delete(It.IsAny<LostItem>()), Times.AtLeast(1));
-            _lostItemRepository.Verify(m => m.Commit(), Times.Once());
+            _lostItemRepository.Verify(m => m.Delete(It.IsAny<LostItem>()), Times.AtLeastOnce());
+            _lostItemRepository.Verify(m => m.Commit(), Times.AtLeastOnce());
         }
     }
 }

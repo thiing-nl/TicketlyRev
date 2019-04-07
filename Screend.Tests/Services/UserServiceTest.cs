@@ -26,6 +26,7 @@ namespace Screend.Tests.Services
         
         static UserServiceTest()
         {
+            Helper.SetupAutoMapper();
             Setup();
         }
 
@@ -59,11 +60,6 @@ namespace Screend.Tests.Services
                 Orders = new List<Order>(),
                 AccountType = AccountType.Manager
             };
-            
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile<UserProfile>();
-            });
             
             userRepository.Setup(u => u.GetByID(userId)).Returns(user);
             userRepository.Setup(ur => ur.GetUserByUsername("manager"))
