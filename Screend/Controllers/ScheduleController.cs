@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace Screend.Controllers
             return Ok(MapSchedule(schedule));
         }
         
+        
         [HttpGet("day")]
         [ProducesResponseType(typeof(ICollection<ScheduleDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,7 +55,7 @@ namespace Screend.Controllers
                         Int32.Parse(input[1]),
                         Int32.Parse(input[2]));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw new BadRequestException("Datetime not right formatted");
                 }
@@ -80,8 +82,8 @@ namespace Screend.Controllers
             return Ok(schedules.ToArray());
         }
 
-        #endregion
-
+        #endregion 
+        
         #region Private Methods
 
         /// <summary>

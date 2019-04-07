@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
 using Screend.Entities.Location;
 using Screend.Entities.Order;
 using Screend.Exceptions;
@@ -9,6 +11,7 @@ namespace Screend.Services
 {
     public interface IOrderService
     {
+        ICollection<Order> GetAllOrders();
         Order Create(OrderCreateDTO orderDto, string mollieId);
 
         Order GetById(int id);
@@ -42,6 +45,11 @@ namespace Screend.Services
             _locationMovieRepository = locationMovieRepository;
         }
 
+        public ICollection<Order> GetAllOrders()
+        {
+            return _orderRepository.GetAll().ToArray();
+        }
+
         public void Update(Order update)
         {
             var order = GetById(update.Id);
@@ -67,9 +75,9 @@ namespace Screend.Services
                 throw new NotFoundException("Schedule not found");
             }
 
-            var locationMovie = _locationMovieRepository.FirstOrDefault(it =>
-                it.MovieId == schedule.MovieId && it.LocationId == schedule.LocationId);
-                
+            var locationMovie =
+                _locationMovieRepository.GetLocationMovieByLocationIdAndMovieId(schedule.LocationId, schedule.MovieId);
+            
             if (locationMovie == null)
             {
                 throw new NotFoundException("Movie at this location not found");
@@ -88,8 +96,9 @@ namespace Screend.Services
             
             foreach (var orderChair in orderDto.OrderChairs)
             {
-                var bookedChair = _orderChairRepository.Get(it =>
-                    it.TheaterChairId == orderChair.ChairId && it.ScheduleId == schedule.Id).FirstOrDefault();
+                var bookedChair =
+                    _orderChairRepository.GetOrderChairByChairIdAndScheduleId(orderChair.ChairId, schedule.Id);
+                
                 if (bookedChair != null)
                 {
                     throw new BadRequestException("Chair already booked");
@@ -122,5 +131,6 @@ namespace Screend.Services
             
             return order;
         }
+        
     }
 }

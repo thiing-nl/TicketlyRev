@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Screend.Entities.Location;
+using Screend.Entities.Order;
 using Screend.Entities.Schedule;
 using Screend.Exceptions;
+using Screend.Models.Schedule;
 using Screend.Repositories;
 
 namespace Screend.Services
@@ -21,7 +23,9 @@ namespace Screend.Services
     {
         private readonly IScheduleRepository _scheduleRepository;
         
-        public ScheduleService(IScheduleRepository scheduleRepository)
+        public ScheduleService(
+            IScheduleRepository scheduleRepository
+        )
         {
             _scheduleRepository = scheduleRepository;
         }
@@ -35,8 +39,7 @@ namespace Screend.Services
                 next.Day
                 );
             
-            return _scheduleRepository.Get(it => it.Time > date && it.Time < end && it.LocationId == locationId)
-                .ToArray();
+            return _scheduleRepository.GetSchedulesByDateRangeAndLocationId(date, end, locationId);
         }
         
         public ICollection<Schedule> GetByWeek(DateTime date, int locationId)
@@ -47,23 +50,18 @@ namespace Screend.Services
                 next.Month,
                 next.Day
             );
-            
-            return _scheduleRepository.Get(it => it.Time > date && it.Time < end && it.LocationId == locationId)
-                .ToArray();
+
+            return _scheduleRepository.GetSchedulesByDateRangeAndLocationId(date, end, locationId);
         }
 
         public ICollection<Schedule> GetByMovie(int movieId, int locationId)
         {
             DateTime now = DateTime.Now;
             DateTime end = DateTime.Today.AddDays(7);
-            var schedules = _scheduleRepository
-                .Get(it => it.Movie.Id == movieId && 
-                           it.Time > now && 
-                           it.Time < end && 
-                           it.LocationId == locationId)
-                .OrderBy(it => it.Time)
-                .ToArray();
-
+            var schedules =
+                _scheduleRepository.GetSchedulesByDateRangeAndLocationIdAndMovieId(
+                    now, end, locationId, movieId
+                    );
             return schedules;
         }
 

@@ -74,7 +74,6 @@ namespace Screend
             services.AddTransient<IMovieService, MovieService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IScheduleService, ScheduleService>();
-            services.AddTransient<ITheaterService, TheaterService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<ITicketService, TicketService>();
