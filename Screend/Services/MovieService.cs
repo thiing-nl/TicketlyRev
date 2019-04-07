@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Screend.Entities.Location;
 using Screend.Entities.Movie;
 using Screend.Exceptions;
+using Screend.Models.Movie;
 using Screend.Repositories;
 
 namespace Screend.Services
@@ -19,7 +21,10 @@ namespace Screend.Services
         private readonly IMovieRepository _movieRepository;
         private readonly ILocationRepository _locationRepository;
 
-        public MovieService(IMovieRepository movieRepository, ILocationRepository locationRepository)
+        public MovieService(
+            IMovieRepository movieRepository, 
+            ILocationRepository locationRepository
+            )
         {
             _movieRepository = movieRepository;
             _locationRepository = locationRepository;

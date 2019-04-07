@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,6 +13,7 @@ using Screend.Entities.Location;
 using Screend.Entities.Order;
 using Screend.Exceptions;
 using Screend.Models.Order;
+using Screend.Models.Schedule;
 using Screend.Services;
 
 namespace Screend.Controllers
@@ -94,7 +97,7 @@ namespace Screend.Controllers
                 var content = await result.Content.ReadAsStringAsync();
                 
                 dynamic decodedObject = JsonConvert.DeserializeObject(content);
-
+                
                 var link = decodedObject._links.checkout.href;
                 var id = decodedObject.id;
                 
@@ -107,7 +110,6 @@ namespace Screend.Controllers
         }
 
         #endregion
-        
 
         
     }

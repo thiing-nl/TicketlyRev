@@ -1,4 +1,5 @@
 using AutoMapper;
+using Screend.Entities.Movie;
 using Screend.Entities.Schedule;
 using Screend.Models.Movie;
 
@@ -8,8 +9,7 @@ namespace Screend.Profiles
     {
         public MovieProfile()
         {
-            CreateMap<Schedule, MovieScheduleDTO>()
-                .ReverseMap();
+            CreateMap<Schedule, MovieScheduleDTO>().ReverseMap();
         }
     }
 }

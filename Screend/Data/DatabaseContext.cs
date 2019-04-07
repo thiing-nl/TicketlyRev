@@ -28,23 +28,23 @@ namespace Screend.Data
         
         // Order
         public DbSet<Order> Orders { get; set; }
-        
-        public DbSet<OrderArticle> OrderArticles { get; set; }
-        
+
         public DbSet<OrderChair> OrderChairs { get; set; }
         
+        public DbSet<OrderArticle> OrderArticles { get; set; }
+
         // Schedule
         public DbSet<Schedule> Schedules { get; set; }
         
         // Theater
         public DbSet<Theater> Theaters { get; set; }
-        
-        public DbSet<TheaterArticle> TheaterArticles { get; set; }
-        
+
+        public DbSet<TheaterRow> TheaterRows { get; set; }
+
         public DbSet<TheaterChair> TheaterChairs { get; set; }
         
-        public DbSet<TheaterRow> TheaterRows { get; set; }
-        
+        public DbSet<TheaterArticle> TheaterArticles { get; set; }
+
         // Database seeders
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

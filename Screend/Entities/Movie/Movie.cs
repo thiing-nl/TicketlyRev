@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Screend.Entities.Movie
 {
     public class Movie
