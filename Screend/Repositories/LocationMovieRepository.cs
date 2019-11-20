@@ -5,7 +5,7 @@ namespace Screend.Repositories
 {
     public interface ILocationMovieRepository: IRepository<LocationMovie>
     {
-        LocationMovie GetLocationMovieByLocationIdAndMovieId(int locationId, int movieId);
+        LocationMovie GetByMovieIdAndLocationId(int movieId, int locationId);
     }
     
     public class LocationMovieRepository : BaseRepository<LocationMovie>, ILocationMovieRepository
@@ -17,11 +17,9 @@ namespace Screend.Repositories
             _context = context;
         }
 
-        public LocationMovie GetLocationMovieByLocationIdAndMovieId(int locationId, int movieId)
+        public LocationMovie GetByMovieIdAndLocationId(int movieId, int locationId)
         {
-            return FirstOrDefault(it => 
-                it.MovieId == movieId && it.LocationId == locationId
-            );
+            return FirstOrDefault(it => it.MovieId == movieId && it.LocationId == locationId);
         }
     }
 }

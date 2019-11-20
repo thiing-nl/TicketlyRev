@@ -75,33 +75,40 @@ namespace Screend.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                var request = JsonConvert.SerializeObject(new MolliePaymentDTO
+                double.TryParse(orderCreateDto.Amount, out double amount);
+
+                var link = "";
+                var id = "";
+                if (amount > 0)
                 {
-                    description = "Ticketly payment",
-                    redirectUrl = orderCreateDto.ReturnUrl,
-                    amount = new MollieAmountDTO
+                    var request = JsonConvert.SerializeObject(new MolliePaymentDTO
                     {
-                        currency = "EUR",
-                        value = orderCreateDto.Amount
-                    }
-                });
+                        description = "Ticketly payment",
+                        redirectUrl = orderCreateDto.ReturnUrl,
+                        amount = new MollieAmountDTO
+                        {
+                            currency = "EUR",
+                            value = orderCreateDto.Amount
+                        }
+                    });
                 
-                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer test_q3bD2tJp8eSNkMcsF37xKBNj3dVfaG");
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer test_q3bD2tJp8eSNkMcsF37xKBNj3dVfaG");
                 
-                var result =
-                    await httpClient.PostAsync(
-                        "https://api.mollie.com/v2/payments", 
-                        new StringContent(request, Encoding.UTF8, "application/json")
+                    var result =
+                        await httpClient.PostAsync(
+                            "https://api.mollie.com/v2/payments", 
+                            new StringContent(request, Encoding.UTF8, "application/json")
                         );
 
-                var content = await result.Content.ReadAsStringAsync();
+                    var content = await result.Content.ReadAsStringAsync();
                 
-                dynamic decodedObject = JsonConvert.DeserializeObject(content);
+                    dynamic decodedObject = JsonConvert.DeserializeObject(content);
+
+                    link = decodedObject._links.checkout.href;
+                    id = decodedObject.id.ToString();
+                }
                 
-                var link = decodedObject._links.checkout.href;
-                var id = decodedObject.id;
-                
-                var order = _orderService.Create(orderCreateDto, id.ToString());
+                var order = _orderService.Create(orderCreateDto, id);
                 var mappedOrder = new OrderDTO();
                 mappedOrder.Id = order.Id;
                 mappedOrder.PaymentLink = link;

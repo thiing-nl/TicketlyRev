@@ -1,68 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Screend.Migrations
 {
-    public partial class MovieTickets : Migration
+    public partial class AddLocationIdToLostItemAndFixDescription : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_OrderChairs_MovieTickets_MovieTicketId",
-                table: "OrderChairs");
+            migrationBuilder.AlterColumn<string>(
+                name: "Description",
+                table: "LostItems",
+                nullable: true,
+                oldClrType: typeof(int));
 
-            migrationBuilder.DropTable(
-                name: "MovieTickets");
-
-            migrationBuilder.RenameColumn(
-                name: "MovieTicketId",
-                table: "OrderChairs",
-                newName: "TicketId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_OrderChairs_MovieTicketId",
-                table: "OrderChairs",
-                newName: "IX_OrderChairs_TicketId");
-
-            migrationBuilder.CreateTable(
-                name: "Tickets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Price = table.Column<double>(nullable: false),
-                    Title = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tickets", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ScheduleTicket",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ScheduleId = table.Column<int>(nullable: false),
-                    TicketId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ScheduleTicket", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ScheduleTicket_Schedules_ScheduleId",
-                        column: x => x.ScheduleId,
-                        principalTable: "Schedules",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ScheduleTicket_Tickets_TicketId",
-                        column: x => x.TicketId,
-                        principalTable: "Tickets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.AddColumn<int>(
+                name: "LocationId",
+                table: "LostItems",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.UpdateData(
                 table: "TheaterRows",
@@ -330,32 +284,16 @@ namespace Screend.Migrations
                 column: "RowName",
                 value: "D");
 
-            migrationBuilder.InsertData(
-                table: "Tickets",
-                columns: new[] { "Id", "Price", "Title" },
-                values: new object[,]
-                {
-                    { 1, 8.5, "Normaal < 120min" },
-                    { 2, 9.0, "Normaal > 120min" },
-                    { 3, 11.0, "3D Film < 120min" },
-                    { 4, 11.5, "3D Film > 120min" }
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_ScheduleTicket_ScheduleId",
-                table: "ScheduleTicket",
-                column: "ScheduleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ScheduleTicket_TicketId",
-                table: "ScheduleTicket",
-                column: "TicketId");
+                name: "IX_LostItems_LocationId",
+                table: "LostItems",
+                column: "LocationId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_OrderChairs_Tickets_TicketId",
-                table: "OrderChairs",
-                column: "TicketId",
-                principalTable: "Tickets",
+                name: "FK_LostItems_Location_LocationId",
+                table: "LostItems",
+                column: "LocationId",
+                principalTable: "Location",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -363,49 +301,23 @@ namespace Screend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_OrderChairs_Tickets_TicketId",
-                table: "OrderChairs");
+                name: "FK_LostItems_Location_LocationId",
+                table: "LostItems");
 
-            migrationBuilder.DropTable(
-                name: "ScheduleTicket");
+            migrationBuilder.DropIndex(
+                name: "IX_LostItems_LocationId",
+                table: "LostItems");
 
-            migrationBuilder.DropTable(
-                name: "Tickets");
+            migrationBuilder.DropColumn(
+                name: "LocationId",
+                table: "LostItems");
 
-            migrationBuilder.RenameColumn(
-                name: "TicketId",
-                table: "OrderChairs",
-                newName: "MovieTicketId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_OrderChairs_TicketId",
-                table: "OrderChairs",
-                newName: "IX_OrderChairs_MovieTicketId");
-
-            migrationBuilder.CreateTable(
-                name: "MovieTickets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MovieTickets", x => x.Id);
-                });
-
-            migrationBuilder.InsertData(
-                table: "MovieTickets",
-                columns: new[] { "Id", "Name", "Price" },
-                values: new object[,]
-                {
-                    { 1, "Normaal < 120min", 8.5 },
-                    { 2, "Normaal > 120min", 9.0 },
-                    { 3, "3D Film < 120min", 11.0 },
-                    { 4, "3D Film > 120min", 11.5 }
-                });
+            migrationBuilder.AlterColumn<int>(
+                name: "Description",
+                table: "LostItems",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldNullable: true);
 
             migrationBuilder.UpdateData(
                 table: "TheaterRows",
@@ -672,14 +584,6 @@ namespace Screend.Migrations
                 keyValue: 38,
                 column: "RowName",
                 value: null);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_OrderChairs_MovieTickets_MovieTicketId",
-                table: "OrderChairs",
-                column: "MovieTicketId",
-                principalTable: "MovieTickets",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

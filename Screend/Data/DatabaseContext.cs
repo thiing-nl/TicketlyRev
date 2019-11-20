@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Screend.Entities.Location;
+using Screend.Entities.LostItem;
 using Screend.Entities.Movie;
 using Screend.Entities.Order;
 using Screend.Entities.Schedule;
@@ -43,8 +44,9 @@ namespace Screend.Data
 
         public DbSet<TheaterChair> TheaterChairs { get; set; }
         
-        public DbSet<TheaterArticle> TheaterArticles { get; set; }
-
+        // Lost Items
+        public DbSet<LostItem> LostItems { get; set; }
+        
         // Database seeders
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

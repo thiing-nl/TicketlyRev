@@ -68,6 +68,7 @@ namespace Screend
             services.AddTransient<ILocationRepository, LocationRepository>();
             services.AddTransient<ILocationMovieRepository, LocationMovieRepository>();
             services.AddTransient<IScheduleTicketRepository, ScheduleTicketRepository>();
+            services.AddTransient<ILostItemRepository, LostItemRepository>();
 
             // Services
             services.AddTransient<IMovieService, MovieService>();
@@ -76,6 +77,8 @@ namespace Screend
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<ITicketService, TicketService>();
+            services.AddTransient<IFinanceService, FinanceService>();
+            services.AddTransient<ILostItemService, LostItemService>();
             
             // Filters
             services.AddScoped<LocationFilter>();
@@ -120,6 +123,8 @@ namespace Screend
                 cfg.AddProfiles(typeof(UserProfile).Assembly);
                 cfg.AddProfiles(typeof(ScheduleProfile).Assembly);
                 cfg.AddProfiles(typeof(MovieProfile).Assembly);
+                cfg.AddProfiles(typeof(LostItemProfile).Assembly);
+                cfg.AddProfiles(typeof(LocationProfile).Assembly);
             });
             services.AddAutoMapper();
             

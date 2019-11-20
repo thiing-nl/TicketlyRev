@@ -1,11 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Screend.Migrations
 {
-    public partial class UserSeeder : Migration
+    public partial class AddLostItems : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "LostItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<int>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    State = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LostItems", x => x.Id);
+                });
+
             migrationBuilder.UpdateData(
                 table: "TheaterRows",
                 keyColumn: "Id",
@@ -271,19 +288,12 @@ namespace Screend.Migrations
                 keyValue: 38,
                 column: "RowName",
                 value: "D");
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AccountType", "FirstName", "LastName", "Password", "Username" },
-                values: new object[] { 1, 0, "order", "order", "order", "order" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1);
+            migrationBuilder.DropTable(
+                name: "LostItems");
 
             migrationBuilder.UpdateData(
                 table: "TheaterRows",

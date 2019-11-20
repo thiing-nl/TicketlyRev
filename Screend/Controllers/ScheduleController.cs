@@ -92,7 +92,7 @@ namespace Screend.Controllers
         /// </summary>
         /// <param name="schedule"></param>
         /// <returns></returns>
-        private static ScheduleDTO MapSchedule(Schedule schedule)
+        public static ScheduleDTO MapSchedule(Schedule schedule)
         {
             var mappedSchedule = Mapper.Map<ScheduleDTO>(schedule);
             foreach (var theaterRow in mappedSchedule.Theater.Rows)
@@ -104,6 +104,10 @@ namespace Screend.Controllers
                     if (isOccupied)
                     {
                         theaterChair.IsOccupied = ChairType.OCCUPIED;
+                    }
+                    else
+                    {
+                        mappedSchedule.AmountFree++;
                     }
                 }
             }

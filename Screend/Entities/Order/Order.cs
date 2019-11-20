@@ -9,6 +9,8 @@ namespace Screend.Entities.Order
         
         public int Paid { get; set; }
         
+        public string Amount { get; set; }
+        
         public int UserId { get; set; }
         
         public string MollieId { get; set; }

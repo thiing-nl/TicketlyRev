@@ -67,6 +67,28 @@ namespace Screend.Migrations
                     );
                 });
 
+            modelBuilder.Entity("Screend.Entities.LostItem.LostItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Email");
+
+                    b.Property<int>("LocationId");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<int>("State");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("LostItems");
+                });
+
             modelBuilder.Entity("Screend.Entities.Movie.Movie", b =>
                 {
                     b.Property<int>("Id")
@@ -107,6 +129,8 @@ namespace Screend.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Amount");
 
                     b.Property<int>("LocationMovieId");
 
@@ -939,6 +963,14 @@ namespace Screend.Migrations
                     b.HasOne("Screend.Entities.Movie.Movie", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Screend.Entities.LostItem.LostItem", b =>
+                {
+                    b.HasOne("Screend.Entities.Location.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -18,12 +18,14 @@ namespace Screend.Controllers
     {
 
         private readonly IMovieService _movieService;
+        private readonly IFinanceService _financeService;
         private readonly IScheduleService _scheduleService;
 
-        public MovieController(IMovieService movieService, IScheduleService scheduleService)
+        public MovieController(IMovieService movieService, IScheduleService scheduleService, IFinanceService financeService)
         {
             _movieService = movieService;
             _scheduleService = scheduleService;
+            _financeService = financeService;
         }
 
         #region GetRoutes
@@ -38,6 +40,7 @@ namespace Screend.Controllers
             return Ok(movies.Select(movie => new MovieWithScheduleDTO
             {
                 Movie = Mapper.Map<MovieDTO>(movie),
+                Turnover = _financeService.GetTurnover(movie.Id, location.Id),
                 Schedule = Mapper.Map<ICollection<MovieScheduleDTO>>(_scheduleService.GetByMovie(movie.Id, location.Id)) 
             }));
         }

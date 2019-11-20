@@ -9,8 +9,8 @@ using Screend.Data;
 namespace Screend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190320230331_TicketSeeder")]
-    partial class TicketSeeder
+    [Migration("20190404010123_OrderAddAmount")]
+    partial class OrderAddAmount
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -109,6 +109,8 @@ namespace Screend.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Amount");
 
                     b.Property<int>("LocationMovieId");
 
@@ -905,6 +907,10 @@ namespace Screend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new { Id = 1, AccountType = 0, FirstName = "order", LastName = "order", Password = "order", Username = "order" }
+                    );
                 });
 
             modelBuilder.Entity("Screend.Entities.User.UserToken", b =>

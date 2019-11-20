@@ -2,13 +2,13 @@
 
 namespace Screend.Migrations
 {
-    public partial class AddLocationAddress : Migration
+    public partial class OrderAddAmount : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Address",
-                table: "Location",
+                name: "Amount",
+                table: "Orders",
                 nullable: true);
 
             migrationBuilder.UpdateData(
@@ -281,8 +281,8 @@ namespace Screend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Address",
-                table: "Location");
+                name: "Amount",
+                table: "Orders");
 
             migrationBuilder.UpdateData(
                 table: "TheaterRows",

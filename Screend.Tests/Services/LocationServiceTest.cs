@@ -19,7 +19,6 @@ namespace Screend.Tests.Services
 
         private static void Setup()
         {
-         
             var locationRepository = new Mock<ILocationRepository>();
 
             locationRepository.Setup(lr => lr.GetByID(1)).Returns(new Location

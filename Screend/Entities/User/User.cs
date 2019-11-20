@@ -6,7 +6,8 @@ namespace Screend.Entities.User
     {
         User = 0,
         Manager = 1,
-        Screen = 2
+        Screen = 2,
+        Cashier = 3
     }
     
     public class User
